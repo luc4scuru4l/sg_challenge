@@ -1,0 +1,36 @@
+-- =========================================
+-- SCRIPT PARA MICROSERVICIO: Account.API
+-- =========================================
+USE MASTER;
+GO
+
+CREATE DATABASE SG_Financial_AccountDb;
+GO
+
+USE SG_Financial_AccountDb;
+GO
+
+CREATE TABLE Accounts (
+  Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+  UserId UNIQUEIDENTIFIER NOT NULL,
+  Balance DECIMAL(18, 4) NOT NULL DEFAULT 0,
+  RowVersion ROWVERSION,
+  CreatedAt DATETIME2 NOT NULL DEFAULT GETUTCDATE()
+);
+GO
+
+CREATE TABLE Transactions (
+  Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+  AccountId UNIQUEIDENTIFIER NOT NULL,
+  Type VARCHAR(20) NOT NULL CHECK (Type IN ('DEPOSIT', 'WITHDRAWAL')),
+  Amount DECIMAL(18, 4) NOT NULL CHECK (Amount > 0),
+  Balance DECIMAL(18, 4) NOT NULL,
+  CreatedAt DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
+
+  CONSTRAINT FK_Transactions_Accounts FOREIGN KEY (AccountId) REFERENCES Accounts(Id)
+);
+GO
+
+CREATE NONCLUSTERED INDEX IX_Accounts_UserId ON Accounts(UserId);
+CREATE NONCLUSTERED INDEX IX_Transactions_AccountId ON Transactions(AccountId);
+GO
