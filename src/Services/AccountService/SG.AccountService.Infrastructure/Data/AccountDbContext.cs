@@ -6,15 +6,17 @@ namespace SG.AccountService.Infrastructure.Data;
 
 public class AccountDbContext : DbContext
 {
-    public AccountDbContext(DbContextOptions<AccountDbContext> options) : base(options) { }
+  public AccountDbContext(DbContextOptions<AccountDbContext> options) : base(options)
+  {
+  }
 
-    public DbSet<Account> Accounts { get; set; }
-    public DbSet<Transaction> Transactions { get; set; }
+  public DbSet<Account> Accounts { get; set; }
+  public DbSet<Transaction> Transactions { get; set; }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        base.OnModelCreating(modelBuilder);
+  protected override void OnModelCreating(ModelBuilder modelBuilder)
+  {
+    base.OnModelCreating(modelBuilder);
 
-        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-    }
+    modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+  }
 }

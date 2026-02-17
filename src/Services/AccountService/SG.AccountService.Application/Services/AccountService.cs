@@ -7,53 +7,54 @@ namespace SG.AccountService.Application.Services;
 
 public class AccountService : IAccountService
 {
-    private readonly IAccountRepository _repository;
+  private readonly IAccountRepository _repository;
 
-    public AccountService(IAccountRepository repository)
+  public AccountService(IAccountRepository repository)
+  {
+    _repository = repository;
+  }
+
+  public async Task<AccountResponseDto> CreateAccountAsync(Guid userId, CancellationToken cancellationToken = default)
+  {
+    var account = new Account(userId);
+
+    await _repository.AddAsync(account, cancellationToken);
+
+    return new AccountResponseDto(account.Id, account.Balance);
+  }
+
+  public async Task<decimal> GetBalanceAsync(Guid accountId, CancellationToken cancellationToken = default)
+  {
+    var account = await GetAccountOrThrowAsync(accountId, cancellationToken);
+    return account.Balance;
+  }
+
+  public async Task DepositAsync(Guid accountId, decimal amount, CancellationToken cancellationToken = default)
+  {
+    var account = await GetAccountOrThrowAsync(accountId, cancellationToken);
+    account.Deposit(amount);
+
+    var transaction = new Transaction(account.Id, TransactionType.Deposit, amount, account.Balance);
+    await _repository.UpdateWithTransactionAsync(account, transaction, cancellationToken);
+  }
+
+  public async Task WithdrawAsync(Guid accountId, decimal amount, CancellationToken cancellationToken = default)
+  {
+    var account = await GetAccountOrThrowAsync(accountId, cancellationToken);
+    account.Withdraw(amount);
+
+    var transaction = new Transaction(account.Id, TransactionType.Withdrawal, amount, account.Balance);
+    await _repository.UpdateWithTransactionAsync(account, transaction, cancellationToken);
+  }
+
+  private async Task<Account> GetAccountOrThrowAsync(Guid accountId, CancellationToken cancellationToken)
+  {
+    var account = await _repository.GetByIdAsync(accountId, cancellationToken);
+    if (account == null)
     {
-        _repository = repository;
+      throw new KeyNotFoundException($"No se encontró la cuenta con ID {accountId}");
     }
 
-    public async Task<AccountResponseDto> CreateAccountAsync(Guid userId, CancellationToken cancellationToken = default)
-    {
-        var account = new Account(userId);
-        
-        await _repository.AddAsync(account, cancellationToken);
-        
-        return new AccountResponseDto(account.Id, account.Balance);
-    }
-
-    public async Task<decimal> GetBalanceAsync(Guid accountId, CancellationToken cancellationToken = default)
-    {
-        var account = await GetAccountOrThrowAsync(accountId, cancellationToken);
-        return account.Balance;
-    }
-
-    public async Task DepositAsync(Guid accountId, decimal amount, CancellationToken cancellationToken = default)
-    {
-        var account = await GetAccountOrThrowAsync(accountId, cancellationToken);
-        account.Deposit(amount);
-        
-        var transaction = new Transaction(account.Id, TransactionType.Deposit, amount, account.Balance);
-        await _repository.UpdateWithTransactionAsync(account, transaction, cancellationToken);
-    }
-
-    public async Task WithdrawAsync(Guid accountId, decimal amount, CancellationToken cancellationToken = default)
-    {
-        var account = await GetAccountOrThrowAsync(accountId, cancellationToken);
-        account.Withdraw(amount);
-
-        var transaction = new Transaction(account.Id, TransactionType.Withdrawal, amount, account.Balance);
-        await _repository.UpdateWithTransactionAsync(account, transaction, cancellationToken);
-    }
-
-    private async Task<Account> GetAccountOrThrowAsync(Guid accountId, CancellationToken cancellationToken)
-    {
-        var account = await _repository.GetByIdAsync(accountId, cancellationToken);
-        if (account == null)
-        {
-            throw new KeyNotFoundException($"No se encontró la cuenta con ID {accountId}");
-        }
-        return account;
-    }
+    return account;
+  }
 }
