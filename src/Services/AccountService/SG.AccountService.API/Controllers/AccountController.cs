@@ -6,6 +6,8 @@ using SG.AccountService.Application.DTOs;
 
 namespace SG.AccountService.API.Controllers;
 
+// TODO: Estaría bueno tener excepciones personalizadas e implementar un middleware global para reducir un poco los try catch's 
+
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
@@ -43,6 +45,51 @@ public class AccountController : ControllerBase
     catch (KeyNotFoundException ex)
     {
       return NotFound(ex.Message);
+    }
+  }
+  
+  // TODO: Crear carpeta de DTO's en este proyecto
+  public record TransactionRequest(decimal Amount);
+
+  [HttpPost("{id:guid}/deposit")]
+  public async Task<IActionResult> Deposit(Guid id, [FromBody] TransactionRequest request,
+    CancellationToken cancellationToken)
+  {
+    try
+    {
+      await _accountService.DepositAsync(id, request.Amount, cancellationToken);
+      return Ok(new { Message = "Depósito realizado con éxito." });
+    }
+    catch (KeyNotFoundException ex)
+    {
+      return NotFound(ex.Message);
+    }
+    catch (ArgumentException ex)
+    {
+      return BadRequest(ex.Message);
+    }
+  }
+
+  [HttpPost("{id:guid}/withdraw")]
+  public async Task<IActionResult> Withdraw(Guid id, [FromBody] TransactionRequest request,
+    CancellationToken cancellationToken)
+  {
+    try
+    {
+      await _accountService.WithdrawAsync(id, request.Amount, cancellationToken);
+      return Ok(new { Message = "Retiro realizado con éxito." });
+    }
+    catch (KeyNotFoundException ex)
+    {
+      return NotFound(ex.Message);
+    }
+    catch (InvalidOperationException ex)
+    {
+      return BadRequest(ex.Message);
+    }
+    catch (ArgumentException ex)
+    {
+      return BadRequest(ex.Message);
     }
   }
 }
