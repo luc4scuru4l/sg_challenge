@@ -23,7 +23,7 @@ public class AccountController : ControllerBase
 
   [HttpPost]
   [ProducesResponseType(typeof(AccountResponseDto), StatusCodes.Status201Created)]
-  [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+  [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
   public async Task<ActionResult<AccountResponseDto>> CreateAccount(CancellationToken cancellationToken)
   {
     var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -39,7 +39,7 @@ public class AccountController : ControllerBase
 
   [HttpGet("{id:guid}/balance")]
   [ProducesResponseType(typeof(AccountResponseDto), StatusCodes.Status200OK)]
-  [ProducesResponseType(StatusCodes.Status404NotFound)]
+  [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
   public async Task<ActionResult<AccountResponseDto>> GetBalance(Guid id, CancellationToken cancellationToken)
   {
     try
@@ -59,7 +59,7 @@ public class AccountController : ControllerBase
   [HttpPost("{id:guid}/deposit")]
   [ProducesResponseType(StatusCodes.Status200OK)]
   [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-  [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+  [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
   public async Task<IActionResult> Deposit(Guid id, [FromBody] TransactionRequest request,
     CancellationToken cancellationToken)
   {
@@ -81,7 +81,7 @@ public class AccountController : ControllerBase
   [HttpPost("{id:guid}/withdraw")]
   [ProducesResponseType(StatusCodes.Status200OK)]
   [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-  [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+  [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
   public async Task<IActionResult> Withdraw(Guid id, [FromBody] TransactionRequest request,
     CancellationToken cancellationToken)
   {
