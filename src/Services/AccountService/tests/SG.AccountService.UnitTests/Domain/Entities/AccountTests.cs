@@ -1,5 +1,6 @@
 using FluentAssertions;
 using SG.AccountService.Domain.Entities;
+using SG.AccountService.Domain.Exceptions;
 
 namespace SG.AccountService.UnitTests.Domain.Entities;
 
@@ -38,7 +39,7 @@ public class AccountTests
   [Theory]
   [InlineData(0)]
   [InlineData(-50)]
-  public void Deposit_WithZeroOrNegativeAmount_ShouldThrowArgumentException(decimal invalidAmount)
+  public void Deposit_WithZeroOrNegativeAmount_ShouldThrowInvalidAmountException(decimal invalidAmount)
   {
     // Arrange
     var account = new Account(_validUserId);
@@ -47,7 +48,7 @@ public class AccountTests
     Action act = () => account.Deposit(invalidAmount);
 
     // Assert
-    act.Should().Throw<ArgumentException>()
+    act.Should().Throw<InvalidAmountException>()
       .WithMessage("El monto a depositar debe ser mayor a cero.");
   }
 
@@ -68,7 +69,7 @@ public class AccountTests
   [Theory]
   [InlineData(0)]
   [InlineData(-100)]
-  public void Withdraw_WithZeroOrNegativeAmount_ShouldThrowArgumentException(decimal invalidAmount)
+  public void Withdraw_WithZeroOrNegativeAmount_ShouldThrowInvalidAmountException(decimal invalidAmount)
   {
     // Arrange
     var account = new Account(_validUserId);
@@ -78,12 +79,12 @@ public class AccountTests
     Action act = () => account.Withdraw(invalidAmount);
 
     // Assert
-    act.Should().Throw<ArgumentException>()
+    act.Should().Throw<InvalidAmountException>()
       .WithMessage("El monto a retirar debe ser mayor a cero.");
   }
 
   [Fact]
-  public void Withdraw_WithInsufficientFunds_ShouldThrowInvalidOperationException()
+  public void Withdraw_WithInsufficientFunds_ShouldThrowInsufficientFundsException()
   {
     // Arrange
     var account = new Account(_validUserId);
@@ -93,7 +94,7 @@ public class AccountTests
     Action act = () => account.Withdraw(500);
 
     // Assert
-    act.Should().Throw<InvalidOperationException>()
-      .WithMessage("Fondos insuficientes.");
+    act.Should().Throw<InsufficientFundsException>()
+      .WithMessage("Fondos insuficientes para realizar la operación.");
   }
 }
