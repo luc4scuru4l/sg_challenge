@@ -6,6 +6,7 @@ using SG.AccountService.Application.Interfaces;
 using SG.AccountService.Application.Services;
 using SG.AccountService.Infrastructure.Data;
 using SG.AccountService.Infrastructure.Repositories;
+using SG.AccountService.API.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -80,6 +81,7 @@ if (app.Environment.IsDevelopment())
   app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "AccountService API v1"));
 }
 
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();

@@ -1,3 +1,5 @@
+using SG.AccountService.Domain.Exceptions;
+
 namespace SG.AccountService.Domain.Entities;
 
 public class Account
@@ -22,15 +24,19 @@ public class Account
 
   public void Deposit(decimal amount)
   {
-    if (amount <= 0) throw new ArgumentException("El monto a depositar debe ser mayor a cero.");
+    if (amount <= 0) 
+      throw new InvalidAmountException("El monto a depositar debe ser mayor a cero.");
 
     Balance += amount;
   }
 
   public void Withdraw(decimal amount)
   {
-    if (amount <= 0) throw new ArgumentException("El monto a retirar debe ser mayor a cero.");
-    if (Balance < amount) throw new InvalidOperationException("Fondos insuficientes.");
+    if (amount <= 0) 
+      throw new InvalidAmountException("El monto a retirar debe ser mayor a cero.");
+    
+    if (Balance < amount)
+      throw new InsufficientFundsException();
 
     Balance -= amount;
   }

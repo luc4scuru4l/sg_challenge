@@ -1,4 +1,4 @@
-using System.Security.Claims; 
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SG.AccountService.Application.Interfaces;
@@ -12,6 +12,8 @@ namespace SG.AccountService.API.Controllers;
 [Route("api/[controller]")]
 [Authorize]
 [Produces("application/json")]
+[ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
+[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
 public class AccountController : ControllerBase
 {
   private readonly IAccountService _accountService;
@@ -23,7 +25,6 @@ public class AccountController : ControllerBase
 
   [HttpPost]
   [ProducesResponseType(typeof(AccountResponseDto), StatusCodes.Status201Created)]
-  [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
   public async Task<ActionResult<AccountResponseDto>> CreateAccount(CancellationToken cancellationToken)
   {
     var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -39,68 +40,36 @@ public class AccountController : ControllerBase
 
   [HttpGet("{id:guid}/balance")]
   [ProducesResponseType(typeof(AccountResponseDto), StatusCodes.Status200OK)]
-  [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
+  [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
   public async Task<ActionResult<AccountResponseDto>> GetBalance(Guid id, CancellationToken cancellationToken)
   {
-    try
-    {
-      var balance = await _accountService.GetBalanceAsync(id, cancellationToken);
-      return Ok(new AccountResponseDto(id, balance));
-    }
-    catch (KeyNotFoundException ex)
-    {
-      return NotFound(ex.Message);
-    }
+    var balance = await _accountService.GetBalanceAsync(id, cancellationToken);
+    return Ok(new AccountResponseDto(id, balance));
   }
-  
+
   // TODO: Crear carpeta de DTO's en este proyecto
   public record TransactionRequest(decimal Amount);
 
   [HttpPost("{id:guid}/deposit")]
   [ProducesResponseType(StatusCodes.Status200OK)]
-  [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-  [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
+  [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+  [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
   public async Task<IActionResult> Deposit(Guid id, [FromBody] TransactionRequest request,
     CancellationToken cancellationToken)
   {
-    try
-    {
-      await _accountService.DepositAsync(id, request.Amount, cancellationToken);
-      return Ok();
-    }
-    catch (KeyNotFoundException ex)
-    {
-      return NotFound(ex.Message);
-    }
-    catch (ArgumentException ex)
-    {
-      return BadRequest(ex.Message);
-    }
+    await _accountService.DepositAsync(id, request.Amount, cancellationToken);
+    return Ok();
   }
 
   [HttpPost("{id:guid}/withdraw")]
   [ProducesResponseType(StatusCodes.Status200OK)]
-  [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-  [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
+  [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+  [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+  [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
   public async Task<IActionResult> Withdraw(Guid id, [FromBody] TransactionRequest request,
     CancellationToken cancellationToken)
   {
-    try
-    {
-      await _accountService.WithdrawAsync(id, request.Amount, cancellationToken);
-      return Ok();
-    }
-    catch (KeyNotFoundException ex)
-    {
-      return NotFound(ex.Message);
-    }
-    catch (InvalidOperationException ex)
-    {
-      return BadRequest(ex.Message);
-    }
-    catch (ArgumentException ex)
-    {
-      return BadRequest(ex.Message);
-    }
+    await _accountService.WithdrawAsync(id, request.Amount, cancellationToken);
+    return Ok();
   }
 }
