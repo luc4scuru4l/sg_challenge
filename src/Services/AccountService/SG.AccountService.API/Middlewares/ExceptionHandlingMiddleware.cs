@@ -73,6 +73,8 @@ public class ExceptionHandlingMiddleware
         break;
     }
 
+    context.Response.StatusCode = response.Status ?? StatusCodes.Status500InternalServerError;
+    
     var jsonOptions = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
     var json = JsonSerializer.Serialize(response, jsonOptions);
 
