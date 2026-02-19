@@ -22,19 +22,24 @@ public class Account
     CreatedAt = DateTime.UtcNow;
   }
 
+  private void ValidateAmount(decimal amount, string action)
+  {
+    if (amount <= 0)
+      throw new InvalidAmountException($"El monto a {action} debe ser mayor a cero.");
+
+    if (Math.Round(amount, 2) != amount)
+      throw new InvalidAmountException("El monto de la transacción no puede tener más de 2 decimales.");
+  }
+  
   public void Deposit(decimal amount)
   {
-    if (amount <= 0) 
-      throw new InvalidAmountException("El monto a depositar debe ser mayor a cero.");
-
+    ValidateAmount(amount, "depositar");
     Balance += amount;
   }
 
   public void Withdraw(decimal amount)
   {
-    if (amount <= 0) 
-      throw new InvalidAmountException("El monto a retirar debe ser mayor a cero.");
-    
+    ValidateAmount(amount, "retirar");
     if (Balance < amount)
       throw new InsufficientFundsException();
 
