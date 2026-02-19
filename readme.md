@@ -20,11 +20,14 @@ API orientada a servicios para la gestión segura de cuentas, permitiendo a los 
 ## Configuración y Ejecución
 La aplicación está diseñada para ser ejecutada y probada en un entorno local.
 
-1. **Clonar el repositorio:** `git clone https://github.com/luc4scuru4l/sg_challenge.git`
+1. **Clonar el repositorio:** `git clone https://github.com/luc4scuru4l/sg_challenge.git` y pararse en la raíz.
 
 2. **Configuración de Base de Datos:**
-    To do
-
+    
+   1. Crear en la raíz del proyecto un archivo `.env`, copiar el contenido del archivo `.env.example` presente en el directorio de la solución dentro del archivo `.env` y setear el password del usuario SA de SQL Server.
+   2. Levantar una instancia de SQL Server.
+   2. Ejecutar los scripts SQL presentes en el directorio `/scripts`
+   3. To do
 3. **Ejecución:**
     To do
 
