@@ -97,4 +97,37 @@ public class AccountTests
     act.Should().Throw<InsufficientFundsException>()
       .WithMessage("Fondos insuficientes para realizar la operación.");
   }
+
+  [Theory]
+  [InlineData(100.123)]
+  [InlineData(50.5555)]
+  public void Deposit_WithMoreThanTwoDecimals_ShouldThrowInvalidAmountException(decimal invalidAmount)
+  {
+    // Arrange
+    var account = new Account(_validUserId);
+
+    // Act
+    Action act = () => account.Deposit(invalidAmount);
+
+    // Assert
+    act.Should().Throw<InvalidAmountException>()
+      .WithMessage("El monto de la transacción no puede tener más de 2 decimales.");
+  }
+
+  [Theory]
+  [InlineData(50.123)]
+  [InlineData(10.5555)]
+  public void Withdraw_WithMoreThanTwoDecimals_ShouldThrowInvalidAmountException(decimal invalidAmount)
+  {
+    // Arrange
+    var account = new Account(_validUserId);
+    account.Deposit(100);
+
+    // Act
+    Action act = () => account.Withdraw(invalidAmount);
+
+    // Assert
+    act.Should().Throw<InvalidAmountException>()
+      .WithMessage("El monto de la transacción no puede tener más de 2 decimales.");
+  }
 }
