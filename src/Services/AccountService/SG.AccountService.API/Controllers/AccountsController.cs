@@ -14,11 +14,11 @@ namespace SG.AccountService.API.Controllers;
 [Produces("application/json")]
 [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
 [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-public class AccountController : ControllerBase
+public class AccountsController : ControllerBase
 {
   private readonly IAccountService _accountService;
 
-  public AccountController(IAccountService accountService)
+  public AccountsController(IAccountService accountService)
   {
     _accountService = accountService;
   }
