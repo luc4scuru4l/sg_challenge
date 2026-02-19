@@ -8,11 +8,11 @@ public interface IAccountService
   Task<AccountResponseDto> CreateAccountAsync(Guid userId, CancellationToken cancellationToken = default);
 
   // Retorna el balance de una cuenta
-  Task<decimal> GetBalanceAsync(Guid accountId, CancellationToken cancellationToken = default);
+  Task<AccountResponseDto> GetBalanceAsync(Guid accountId, CancellationToken cancellationToken = default);
 
   // Realiza un depósito en una cuenta
-  Task DepositAsync(Guid accountId, decimal amount, CancellationToken cancellationToken = default);
+  Task<AccountResponseDto> DepositAsync(Guid accountId, decimal amount, CancellationToken cancellationToken = default);
 
   // Realiza un retiro en una cuenta
-  Task WithdrawAsync(Guid accountId, decimal amount, CancellationToken cancellationToken = default);
+  Task<AccountResponseDto> WithdrawAsync(Guid accountId, decimal amount, CancellationToken cancellationToken = default);
 }
