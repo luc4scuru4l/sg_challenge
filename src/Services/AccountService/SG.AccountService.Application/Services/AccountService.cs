@@ -24,15 +24,15 @@ public class AccountService : IAccountService
     return new AccountResponseDto(account.Id, account.Balance);
   }
 
-  public async Task<AccountResponseDto> GetBalanceAsync(Guid accountId, CancellationToken cancellationToken = default)
+  public async Task<AccountResponseDto> GetBalanceAsync(Guid accountId, Guid userId, CancellationToken cancellationToken = default)
   {
-    var account = await GetAccountOrThrowAsync(accountId, cancellationToken);
+    var account = await GetAccountOrThrowAsync(accountId, userId, cancellationToken);
     return new AccountResponseDto(account.Id, account.Balance);
   }
 
-  public async Task<AccountResponseDto> DepositAsync(Guid accountId, decimal amount, CancellationToken cancellationToken = default)
+  public async Task<AccountResponseDto> DepositAsync(Guid accountId, Guid userId, decimal amount, CancellationToken cancellationToken = default)
   {
-    var account = await GetAccountOrThrowAsync(accountId, cancellationToken);
+    var account = await GetAccountOrThrowAsync(accountId, userId, cancellationToken);
     account.Deposit(amount);
 
     var transaction = new Transaction(account.Id, TransactionType.Deposit, amount, account.Balance);
@@ -41,9 +41,9 @@ public class AccountService : IAccountService
     return new AccountResponseDto(account.Id, account.Balance);
   }
 
-  public async Task<AccountResponseDto> WithdrawAsync(Guid accountId, decimal amount, CancellationToken cancellationToken = default)
+  public async Task<AccountResponseDto> WithdrawAsync(Guid accountId, Guid userId, decimal amount, CancellationToken cancellationToken = default)
   {
-    var account = await GetAccountOrThrowAsync(accountId, cancellationToken);
+    var account = await GetAccountOrThrowAsync(accountId, userId, cancellationToken);
     account.Withdraw(amount);
 
     var transaction = new Transaction(account.Id, TransactionType.Withdrawal, amount, account.Balance);
@@ -52,9 +52,9 @@ public class AccountService : IAccountService
     return new AccountResponseDto(account.Id, account.Balance);
   }
 
-  private async Task<Account> GetAccountOrThrowAsync(Guid accountId, CancellationToken cancellationToken)
+  private async Task<Account> GetAccountOrThrowAsync(Guid accountId, Guid userId, CancellationToken cancellationToken)
   {
-    var account = await _repository.GetByIdAsync(accountId, cancellationToken);
+    var account = await _repository.GetByIdAndUserIdAsync(accountId, userId, cancellationToken);
     if (account == null)
     {
       throw new AccountNotFoundException(accountId);

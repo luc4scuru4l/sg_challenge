@@ -60,6 +60,13 @@ public class ExceptionHandlingMiddleware
         response.Title = "Resource Not Found";
         response.Detail = ex.Message;
         break;
+      
+      case UnauthorizedException ex:
+        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+        response.Status = StatusCodes.Status401Unauthorized;
+        response.Title = "Unauthorized";
+        response.Detail = ex.Message;
+        break;
 
       case DomainException ex:
         context.Response.StatusCode = StatusCodes.Status400BadRequest;

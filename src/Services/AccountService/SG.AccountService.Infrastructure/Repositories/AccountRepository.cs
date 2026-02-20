@@ -14,10 +14,10 @@ public class AccountRepository : IAccountRepository
     _context = context;
   }
 
-  public async Task<Account?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+  public async Task<Account?> GetByIdAndUserIdAsync(Guid id, Guid userId, CancellationToken cancellationToken = default)
   {
     return await _context.Accounts
-      .FirstOrDefaultAsync(a => a.Id == id, cancellationToken);
+      .FirstOrDefaultAsync(a => a.Id == id && a.UserId == userId, cancellationToken);
   }
 
   public async Task AddAsync(Account account, CancellationToken cancellationToken = default)

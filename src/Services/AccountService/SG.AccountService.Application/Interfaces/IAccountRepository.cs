@@ -4,8 +4,8 @@ namespace SG.AccountService.Application.Interfaces;
 
 public interface IAccountRepository
 {
-  //Obtiene una cuenta a través de su ID
-  Task<Account?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+  //Obtiene una cuenta a través de su ID y su userId
+  Task<Account?> GetByIdAndUserIdAsync(Guid id, Guid userId, CancellationToken cancellationToken = default);
 
   // Añade una nueva cuenta
   Task AddAsync(Account account, CancellationToken cancellationToken = default);

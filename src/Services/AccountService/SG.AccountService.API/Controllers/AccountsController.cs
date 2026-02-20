@@ -1,8 +1,8 @@
-using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SG.AccountService.Application.Interfaces;
 using SG.AccountService.Application.DTOs;
+using  SG.AccountService.API.Extensions;
 
 namespace SG.AccountService.API.Controllers;
 
@@ -25,12 +25,7 @@ public class AccountsController : ControllerBase
   [ProducesResponseType(typeof(AccountResponseDto), StatusCodes.Status201Created)]
   public async Task<ActionResult<AccountResponseDto>> CreateAccount(CancellationToken cancellationToken)
   {
-    var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-    if (!Guid.TryParse(userIdClaim, out var userId))
-    {
-      return Unauthorized("Token inválido.");
-    }
-
+    var userId = User.GetUserId();
     var account = await _accountService.CreateAccountAsync(userId, cancellationToken);
 
     return CreatedAtAction(nameof(GetBalance), new { id = account.AccountId }, account);
@@ -41,7 +36,8 @@ public class AccountsController : ControllerBase
   [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
   public async Task<ActionResult<AccountResponseDto>> GetBalance(Guid id, CancellationToken cancellationToken)
   {
-    var response = await _accountService.GetBalanceAsync(id, cancellationToken);
+    var userId = User.GetUserId();
+    var response = await _accountService.GetBalanceAsync(id, userId, cancellationToken);
     return Ok(response);
   }
 
@@ -55,7 +51,8 @@ public class AccountsController : ControllerBase
   public async Task<ActionResult<AccountResponseDto>> Deposit(Guid id, [FromBody] TransactionRequest request,
     CancellationToken cancellationToken)
   {
-    var response = await _accountService.DepositAsync(id, request.Amount, cancellationToken);
+    var userId = User.GetUserId();
+    var response = await _accountService.DepositAsync(id, userId, request.Amount, cancellationToken);
     return Ok(response);
   }
 
@@ -67,7 +64,8 @@ public class AccountsController : ControllerBase
   public async Task<ActionResult<AccountResponseDto>> Withdraw(Guid id, [FromBody] TransactionRequest request,
     CancellationToken cancellationToken)
   {
-    var response = await _accountService.WithdrawAsync(id, request.Amount, cancellationToken);
+    var userId = User.GetUserId();
+    var response = await _accountService.WithdrawAsync(id, userId, request.Amount, cancellationToken);
     return Ok(response);
   }
 }
