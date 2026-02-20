@@ -3,8 +3,8 @@ namespace SG.AuthService.Domain.Entities;
 public class User
 {
   public Guid Id { get; private set; }
-  public string UserName { get; private set; }
-  public string PasswordHash { get; private set; }
+  public string UserName { get; private set; } = null!;
+  public string PasswordHash { get; private set; } = null!;
   public bool IsActive { get; private set; }
   public DateTime CreatedAt { get; private set; }
   
