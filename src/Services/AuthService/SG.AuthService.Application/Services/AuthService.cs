@@ -9,7 +9,7 @@ public class AuthService : IAuthService
 {
   private readonly IUserRepository _userRepository;
   private readonly IJwtProvider _jwtProvider;
-  private readonly IPasswordHasher _passwordHasher; // <-- Inyectamos el hasher
+  private readonly IPasswordHasher _passwordHasher;
 
   public AuthService(IUserRepository userRepository, IJwtProvider jwtProvider, IPasswordHasher passwordHasher)
   {
@@ -25,8 +25,7 @@ public class AuthService : IAuthService
     {
       throw new InvalidOperationException("El nombre de usuario ya está en uso.");
     }
-
-    // Usamos la abstracción
+    
     string passwordHash = _passwordHasher.Hash(request.Password);
     var newUser = new User(request.UserName, passwordHash);
 
@@ -36,8 +35,6 @@ public class AuthService : IAuthService
   public async Task<LoginResponse> LoginAsync(LoginRequest request, CancellationToken cancellationToken = default)
   {
     var user = await _userRepository.GetByUserNameAsync(request.UserName, cancellationToken);
-
-    // Usamos la abstracción
     if (user == null || !_passwordHasher.Verify(request.Password, user.PasswordHash))
     {
       throw new UnauthorizedAccessException("Credenciales inválidas.");
