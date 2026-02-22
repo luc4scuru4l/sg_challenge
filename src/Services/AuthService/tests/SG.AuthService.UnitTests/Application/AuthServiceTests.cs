@@ -3,6 +3,7 @@ using Moq;
 using AuthServiceClass = SG.AuthService.Application.Services.AuthService;
 using SG.AuthService.Application.DTOs;
 using SG.AuthService.Application.Interfaces;
+using SG.AuthService.Application.Exceptions;
 using SG.AuthService.Domain.Entities;
 using SG.AuthService.Domain.Repositories;
 
@@ -54,7 +55,7 @@ public class AuthServiceTests
     }
 
     [Fact]
-    public async Task RegisterAsync_WhenUserExists_ShouldThrowInvalidOperationException()
+    public async Task RegisterAsync_WhenUserExists_ShouldThrowUserAlreadyExistsException()
     {
         // Arrange
         var request = new RegisterRequest("lucas", "Password123!");
@@ -68,8 +69,8 @@ public class AuthServiceTests
         Func<Task> act = async () => await _sut.RegisterAsync(request);
 
         // Assert
-        await act.Should().ThrowAsync<InvalidOperationException>()
-            .WithMessage("El nombre de usuario ya está en uso.");
+        await act.Should().ThrowAsync<UserAlreadyExistsException>()
+            .WithMessage($"El nombre de usuario '{request.UserName}' ya está en uso.");
             
         // Verificamos que NUNCA se haya llamado al método de guardar
         _userRepositoryMock.Verify(x => x.AddAsync(It.IsAny<User>(), It.IsAny<CancellationToken>()), Times.Never);
@@ -104,7 +105,7 @@ public class AuthServiceTests
     }
 
     [Fact]
-    public async Task LoginAsync_WhenUserDoesNotExist_ShouldThrowUnauthorizedAccessException()
+    public async Task LoginAsync_WhenUserDoesNotExist_ShouldThrowInvalidCredentialsException()
     {
         // Arrange
         var request = new LoginRequest("lucas", "Password123!");
@@ -117,12 +118,12 @@ public class AuthServiceTests
         Func<Task> act = async () => await _sut.LoginAsync(request);
 
         // Assert
-        await act.Should().ThrowAsync<UnauthorizedAccessException>()
+        await act.Should().ThrowAsync<InvalidCredentialsException>()
             .WithMessage("Credenciales inválidas.");
     }
 
     [Fact]
-    public async Task LoginAsync_WhenPasswordIsInvalid_ShouldThrowUnauthorizedAccessException()
+    public async Task LoginAsync_WhenPasswordIsInvalid_ShouldThrowInvalidCredentialsException()
     {
         // Arrange
         var request = new LoginRequest("lucas", "WrongPassword!");
@@ -140,7 +141,7 @@ public class AuthServiceTests
         Func<Task> act = async () => await _sut.LoginAsync(request);
 
         // Assert
-        await act.Should().ThrowAsync<UnauthorizedAccessException>()
+        await act.Should().ThrowAsync<InvalidCredentialsException>()
             .WithMessage("Credenciales inválidas.");
     }
 }

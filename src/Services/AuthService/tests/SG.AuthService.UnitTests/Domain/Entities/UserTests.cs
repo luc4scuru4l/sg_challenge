@@ -1,5 +1,6 @@
 using FluentAssertions;
 using SG.AuthService.Domain.Entities;
+using SG.AuthService.Domain.Exceptions;
 
 namespace SG.AuthService.UnitTests.Domain.Entities;
 
@@ -28,7 +29,7 @@ public class UserTests
   [InlineData("")]
   [InlineData("   ")]
   [InlineData(null)]
-  public void Constructor_WithInvalidUserName_ShouldThrowArgumentException(string invalidUserName)
+  public void Constructor_WithInvalidUserName_ShouldThrowInvalidUserException(string invalidUserName)
   {
     // Arrange
     var validPasswordHash = "hashed_password_123_xyz";
@@ -37,7 +38,7 @@ public class UserTests
     Action act = () => new User(invalidUserName, validPasswordHash);
 
     // Assert
-    act.Should().Throw<ArgumentException>()
+    act.Should().Throw<InvalidUserException>()
       .WithMessage("El userName es requerido.");
   }
 
@@ -45,7 +46,7 @@ public class UserTests
   [InlineData("")]
   [InlineData("   ")]
   [InlineData(null)]
-  public void Constructor_WithInvalidPasswordHash_ShouldThrowArgumentException(string invalidPasswordHash)
+  public void Constructor_WithInvalidPasswordHash_ShouldThrowInvalidUserException(string invalidPasswordHash)
   {
     // Arrange
     var validUserName = "admin_jperez";
@@ -54,7 +55,7 @@ public class UserTests
     Action act = () => new User(validUserName, invalidPasswordHash);
 
     // Assert
-    act.Should().Throw<ArgumentException>()
+    act.Should().Throw<InvalidUserException>()
       .WithMessage("El hash de la contraseña es requerido.");
   }
 }
