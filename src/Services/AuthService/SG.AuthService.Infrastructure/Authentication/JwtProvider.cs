@@ -24,8 +24,8 @@ public class JwtProvider : IJwtProvider
 
     var claims = new[]
     {
-      new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-      new Claim(ClaimTypes.Name, user.UserName),
+      new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+      new Claim(JwtRegisteredClaimNames.Name, user.UserName),
       new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
     };
 

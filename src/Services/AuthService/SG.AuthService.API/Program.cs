@@ -1,3 +1,4 @@
+using System.IdentityModel.Tokens.Jwt;
 using Microsoft.EntityFrameworkCore;
 using SG.AuthService.Application.Interfaces;
 using SG.AuthService.Application.Services;
@@ -16,6 +17,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AuthDbContext>(options =>
   options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+JwtSecurityTokenHandler.DefaultOutboundClaimTypeMap.Clear();
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection(JwtSettings.SectionName));
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
