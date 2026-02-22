@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using SG.AccountService.Application.Interfaces;
+using SG.AccountService.Domain.Repositories;
 using SG.AccountService.Domain.Entities;
 using SG.AccountService.Infrastructure.Data;
 

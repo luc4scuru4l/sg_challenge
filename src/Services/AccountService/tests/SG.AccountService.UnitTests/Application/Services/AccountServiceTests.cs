@@ -2,7 +2,7 @@ using FluentAssertions;
 using Moq;
 using SG.AccountService.Application.DTOs;
 using SG.AccountService.Application.Exceptions;
-using SG.AccountService.Application.Interfaces;
+using SG.AccountService.Domain.Repositories;
 using AccountServiceClass = SG.AccountService.Application.Services.AccountService;
 using SG.AccountService.Domain.Entities;
 

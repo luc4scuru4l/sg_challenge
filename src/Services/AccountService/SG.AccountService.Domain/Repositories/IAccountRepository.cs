@@ -1,6 +1,6 @@
 using SG.AccountService.Domain.Entities;
 
-namespace SG.AccountService.Application.Interfaces;
+namespace SG.AccountService.Domain.Repositories;
 
 public interface IAccountRepository
 {

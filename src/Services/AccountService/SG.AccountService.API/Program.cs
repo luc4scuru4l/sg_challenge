@@ -2,6 +2,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using SG.AccountService.Domain.Repositories;
 using SG.AccountService.Application.Interfaces;
 using SG.AccountService.Application.Services;
 using SG.AccountService.Infrastructure.Data;

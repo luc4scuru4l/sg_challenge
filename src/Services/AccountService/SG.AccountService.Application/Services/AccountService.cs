@@ -1,6 +1,7 @@
 using SG.AccountService.Application.DTOs;
 using SG.AccountService.Application.Exceptions;
 using SG.AccountService.Application.Interfaces;
+using SG.AccountService.Domain.Repositories;
 using SG.AccountService.Domain.Entities;
 using SG.AccountService.Domain.Enums;
 
