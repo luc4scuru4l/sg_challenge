@@ -1,3 +1,4 @@
+using SG.AuthService.Domain.Exceptions;
 namespace SG.AuthService.Domain.Entities;
 
 public class User
@@ -15,10 +16,10 @@ public class User
   public User(string userName, string passwordHash)
   {
     if (string.IsNullOrWhiteSpace(userName))
-      throw new ArgumentException("El userName es requerido.");
+      throw new InvalidUserException("El userName es requerido.");
 
     if (string.IsNullOrWhiteSpace(passwordHash))
-      throw new ArgumentException("El hash de la contraseña es requerido.");
+      throw new InvalidUserException("El hash de la contraseña es requerido.");
 
     Id = Guid.NewGuid();
     UserName = userName.Trim();
@@ -26,5 +27,4 @@ public class User
     IsActive = true;
     CreatedAt = DateTime.UtcNow;
   }
-  
 }

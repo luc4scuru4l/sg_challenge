@@ -1,5 +1,6 @@
 using SG.AuthService.Application.Interfaces;
 using SG.AuthService.Application.DTOs;
+using SG.AuthService.Application.Exceptions;
 using SG.AuthService.Domain.Entities;
 using SG.AuthService.Domain.Repositories;
 
@@ -23,7 +24,7 @@ public class AuthService : IAuthService
     var existingUser = await _userRepository.GetByUserNameAsync(request.UserName, cancellationToken);
     if (existingUser != null)
     {
-      throw new InvalidOperationException("El nombre de usuario ya está en uso.");
+      throw new UserAlreadyExistsException(request.UserName);
     }
     
     string passwordHash = _passwordHasher.Hash(request.Password);
@@ -37,7 +38,7 @@ public class AuthService : IAuthService
     var user = await _userRepository.GetByUserNameAsync(request.UserName, cancellationToken);
     if (user == null || !_passwordHasher.Verify(request.Password, user.PasswordHash))
     {
-      throw new UnauthorizedAccessException("Credenciales inválidas.");
+      throw new InvalidCredentialsException();
     }
 
     string token = _jwtProvider.Generate(user);
