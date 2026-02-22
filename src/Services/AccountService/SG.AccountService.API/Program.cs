@@ -1,4 +1,5 @@
 using System.Text;
+using System.Reflection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -19,12 +20,27 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 
 // Config de Swagger con JWT
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
+builder.Services.AddSwaggerGen(options =>
 {
-  c.SwaggerDoc("v1",
-    new Microsoft.OpenApi.Models.OpenApiInfo { Title = "SG Financial - Account API", Version = "v1" });
+  options.SwaggerDoc("v1",
+    new Microsoft.OpenApi.Models.OpenApiInfo
+    {
+      Title = "SG Financial - Account API", 
+      Version = "v1",
+      Description = "Microservicio encargado de la gestión de cuentas para el ecosistema financiero SG.</br>" +
+                    "Todos los endpoints están segurizados mediante JWT.</br>" +
+                    "Este servicio permite:</br>" +
+                    "1. Crear una cuenta.</br>" +
+                    "2. Consultar el balance de una cuenta.</br>" +
+                    "3. Realizar un depósito en una cuenta.</br>" +
+                    "4. Realizar un retiro en una cuenta."
+    });
 
-  c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+  var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+  var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFilename);
+  options.IncludeXmlComments(xmlPath);
+
+  options.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
   {
     Name = "Authorization",
     Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
@@ -32,10 +48,10 @@ builder.Services.AddSwaggerGen(c =>
     BearerFormat = "JWT",
     In = Microsoft.OpenApi.Models.ParameterLocation.Header,
     Description =
-      "Ingresá el token JWT en este formato: Bearer {tu_token_aqui}"
+      "Ingresá el token JWT:"
   });
 
-  c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+  options.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
   {
     {
       new Microsoft.OpenApi.Models.OpenApiSecurityScheme
