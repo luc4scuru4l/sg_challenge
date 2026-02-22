@@ -41,10 +41,10 @@ public class ExceptionHandlingMiddleware
 
     switch (exception)
     {
-      case InvalidAmountException ex:
+      case InvalidMoneyException ex:
         context.Response.StatusCode = StatusCodes.Status400BadRequest;
         response.Status = StatusCodes.Status400BadRequest;
-        response.Title = "Invalid Transaction Amount";
+        response.Title = "Invalid Money Amount";
         response.Detail = ex.Message;
         break;
       case InsufficientFundsException ex:

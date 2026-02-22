@@ -1,4 +1,5 @@
 using SG.AccountService.Domain.Exceptions;
+using SG.AccountService.Domain.ValueObjects;
 
 namespace SG.AccountService.Domain.Entities;
 
@@ -6,7 +7,7 @@ public class Account
 {
   public Guid Id { get; private set; }
   public Guid UserId { get; private set; }
-  public decimal Balance { get; private set; }
+  public Money Balance { get; private set; } = null!;
   public byte[] RowVersion { get; private set; } = null!;
   public DateTime CreatedAt { get; private set; }
 
@@ -16,30 +17,28 @@ public class Account
 
   public Account(Guid userId)
   {
+    if (userId.Equals(Guid.Empty))
+      throw new InvalidAccountException("El ID de usuario no puede ser vacío.");
+    
     Id = Guid.NewGuid();
     UserId = userId;
-    Balance = 0;
+    Balance = new Money(0);
     CreatedAt = DateTime.UtcNow;
   }
-
-  private void ValidateAmount(decimal amount, string action)
-  {
-    if (amount <= 0)
-      throw new InvalidAmountException($"El monto a {action} debe ser mayor a cero.");
-
-    if (Math.Round(amount, 2) != amount)
-      throw new InvalidAmountException("El monto de la transacción no puede tener más de 2 decimales.");
-  }
   
-  public void Deposit(decimal amount)
+  public void Deposit(Money amount)
   {
-    ValidateAmount(amount, "depositar");
+    if (amount == Money.Zero)
+      throw new InvalidMoneyException($"El monto a depositar debe ser mayor a cero.");
+    
     Balance += amount;
   }
 
-  public void Withdraw(decimal amount)
+  public void Withdraw(Money amount)
   {
-    ValidateAmount(amount, "retirar");
+    if (amount == Money.Zero)
+      throw new InvalidMoneyException($"El monto a retirar debe ser mayor a cero.");
+    
     if (Balance < amount)
       throw new InsufficientFundsException();
 

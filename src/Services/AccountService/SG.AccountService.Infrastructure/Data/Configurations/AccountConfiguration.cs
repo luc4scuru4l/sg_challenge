@@ -19,6 +19,14 @@ public class AccountConfiguration : IEntityTypeConfiguration<Account>
       .IsRequired();
     builder.HasIndex(e => e.UserId);
 
+    builder.ComplexProperty(e => e.Balance, balanceBuilder =>
+    {
+      balanceBuilder.Property(m => m.Value)
+        .HasColumnName("Balance")
+        .HasPrecision(18, 4)
+        .IsRequired();
+    });
+
     builder.Property(e => e.Balance)
       .HasPrecision(18, 4)
       .IsRequired();
