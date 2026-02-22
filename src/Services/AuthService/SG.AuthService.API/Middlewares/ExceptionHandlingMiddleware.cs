@@ -62,10 +62,10 @@ public class ExceptionHandlingMiddleware
         response.Detail = ex.Message;
         break;
       
-      case WeakPasswordException ex:
+      case InvalidPasswordException ex:
         context.Response.StatusCode = StatusCodes.Status400BadRequest;
         response.Status = StatusCodes.Status400BadRequest;
-        response.Title = "Weak Password";
+        response.Title = "Invalid Password";
         response.Detail = ex.Message;
         break;
 

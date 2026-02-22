@@ -23,9 +23,16 @@ public class AuthController : ControllerBase
   /// Registra un nuevo usuario en el sistema.
   /// </summary>
   /// <remarks>
-  /// La contraseña debe cumplir con la política de seguridad:
-  /// - Mínimo 6 caracteres.
-  /// - Al menos un número.
+  /// Las credenciales a registrar deben cumplir con la política de seguridad:
+  /// 
+  /// **Constraseña:**
+  /// 1. Mínimo 8 caracteres.
+  /// 2. Máximo 32 caracteres.
+  /// 3. Al menos un número.
+  /// 
+  /// **Nombre de usuario**
+  /// 1. Menos de 50 caracteres
+  /// 2. Más de 5 caracteres
   /// </remarks>
   [HttpPost("register")]
   [ProducesResponseType(typeof(void), StatusCodes.Status201Created)]
