@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using SG.AuthService.Application.Interfaces;
 using SG.AuthService.Application.Services;
 using SG.AuthService.Domain.Repositories;
+using SG.AuthService.API.Middlewares;
 using SG.AuthService.Infrastructure.Authentication;
 using SG.AuthService.Infrastructure.Data;
 using SG.AuthService.Infrastructure.Data.Repositories;
@@ -34,6 +35,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+//Middleware global
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+
 app.UseAuthorization();
 app.MapControllers();
 

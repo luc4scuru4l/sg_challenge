@@ -19,28 +19,14 @@ public class AuthController : ControllerBase
   [HttpPost("register")]
   public async Task<IActionResult> Register([FromBody] RegisterRequest request, CancellationToken ct)
   {
-    try
-    {
-      await _authService.RegisterAsync(request, ct);
-      return StatusCode(StatusCodes.Status201Created, new { message = "Usuario registrado exitosamente." });
-    }
-    catch (InvalidOperationException ex)
-    {
-      return Conflict(new { error = ex.Message });
-    }
+    await _authService.RegisterAsync(request, ct);
+    return StatusCode(StatusCodes.Status201Created, new { message = "Usuario registrado exitosamente." });
   }
 
   [HttpPost("login")]
   public async Task<IActionResult> Login([FromBody] LoginRequest request, CancellationToken ct)
   {
-    try
-    {
-      var response = await _authService.LoginAsync(request, ct);
-      return Ok(response);
-    }
-    catch (UnauthorizedAccessException ex)
-    {
-      return Unauthorized();
-    }
+    var response = await _authService.LoginAsync(request, ct);
+    return Ok(response);
   }
 }
