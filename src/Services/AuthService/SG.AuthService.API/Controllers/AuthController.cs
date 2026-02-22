@@ -32,7 +32,7 @@ public class AuthController : ControllerBase
   /// 
   /// **Nombre de usuario**
   /// 1. Menos de 50 caracteres
-  /// 2. Más de 5 caracteres
+  /// 2. Más de 4 caracteres
   /// </remarks>
   [HttpPost("register")]
   [ProducesResponseType(typeof(void), StatusCodes.Status201Created)]
