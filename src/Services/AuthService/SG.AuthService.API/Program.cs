@@ -16,6 +16,17 @@ builder.Services.AddRouting(options => options.LowercaseUrls = true);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
+  options.SwaggerDoc("v1",
+    new Microsoft.OpenApi.Models.OpenApiInfo
+    {
+      Title = "SG Financial - Auth API", 
+      Version = "v1",
+      Description = "Microservicio encargado de la gestión de identidades, registro de usuarios y emisión de tokens JWT para el ecosistema financiero SG.</br>" +
+                    "Este servicio permite:</br>" +
+                    "1. Registrar un usuario</br>" +
+                    "2. Loguear un usuario</br>"
+    });
+  
   var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
   var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFilename);
   
