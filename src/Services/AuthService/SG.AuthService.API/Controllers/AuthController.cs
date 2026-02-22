@@ -7,6 +7,9 @@ namespace SG.AuthService.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Produces("application/json")]
+[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
 public class AuthController : ControllerBase
 {
   private readonly IAuthService _authService;
@@ -16,15 +19,34 @@ public class AuthController : ControllerBase
     _authService = authService;
   }
 
+  /// <summary>
+  /// Registra un nuevo usuario en el sistema.
+  /// </summary>
+  /// <remarks>
+  /// La contraseña debe cumplir con la política de seguridad:
+  /// - Mínimo 6 caracteres.
+  /// - Al menos un número.
+  /// </remarks>
   [HttpPost("register")]
+  [ProducesResponseType(typeof(void), StatusCodes.Status201Created)]
+  [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status409Conflict)]
   public async Task<IActionResult> Register([FromBody] RegisterRequest request, CancellationToken ct)
   {
     await _authService.RegisterAsync(request, ct);
-    return StatusCode(StatusCodes.Status201Created, new { message = "Usuario registrado exitosamente." });
+    return StatusCode(StatusCodes.Status201Created);
   }
 
+  /// <summary>
+  /// Retorna un token de acceso.
+  /// </summary>
+  /// <remarks>
+  /// Crea y retorna un token de acceso firmado para un usuario registrado.
+  /// El token expira a los 20 minutos.
+  /// </remarks>
   [HttpPost("login")]
-  public async Task<IActionResult> Login([FromBody] LoginRequest request, CancellationToken ct)
+  [ProducesResponseType(typeof(LoginResponse), StatusCodes.Status200OK)]
+  [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+  public async Task<ActionResult<LoginResponse>> Login([FromBody] LoginRequest request, CancellationToken ct)
   {
     var response = await _authService.LoginAsync(request, ct);
     return Ok(response);

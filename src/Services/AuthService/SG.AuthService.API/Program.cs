@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.EntityFrameworkCore;
 using SG.AuthService.Application.Interfaces;
@@ -13,7 +14,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+  var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+  var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFilename);
+  
+  options.IncludeXmlComments(xmlPath);
+});
 
 builder.Services.AddDbContext<AuthDbContext>(options =>
   options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
