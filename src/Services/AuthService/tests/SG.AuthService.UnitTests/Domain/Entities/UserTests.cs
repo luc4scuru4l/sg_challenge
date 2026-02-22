@@ -58,4 +58,20 @@ public class UserTests
     act.Should().Throw<InvalidUserException>()
       .WithMessage("El hash de la contraseña es requerido.");
   }
+
+  [Fact]
+  public void Constructor_WhenUserNameIsTooLong_ShouldThrowInvalidUserException()
+  {
+    // Arrange
+    // Crea un string de 51 letras 'a' (MaxUserNameLength + 1)
+    var tooLongUserName = new string('a', User.MAX_USERNAME_LENGTH + 1);
+    var validPasswordHash = "hashed_password_123";
+
+    // Act
+    Action act = () => new User(tooLongUserName, validPasswordHash);
+
+    // Assert
+    act.Should().Throw<InvalidUserException>()
+      .WithMessage($"El nombre de usuario no puede superar los {User.MAX_USERNAME_LENGTH} caracteres.");
+  }
 }
