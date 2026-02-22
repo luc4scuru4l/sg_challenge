@@ -144,4 +144,29 @@ public class AuthServiceTests
         await act.Should().ThrowAsync<InvalidCredentialsException>()
             .WithMessage("Credenciales inválidas.");
     }
+
+    [Theory]
+    [InlineData("")] // Vacío
+    [InlineData("   ")] // Solo espacios (al hacer Trim queda vacío)
+    [InlineData("12345")] // Menos de 6 caracteres (tiene números pero es corta)
+    [InlineData("abcdef")] // 6 caracteres pero sin números
+    [InlineData("  12345  ")] // Al hacer Trim queda de 5 caracteres
+    public async Task RegisterAsync_WhenPasswordIsWeak_ShouldThrowWeakPasswordException(string weakPassword)
+    {
+        // Arrange
+        var request = new RegisterRequest("lucas", weakPassword);
+
+        // Act
+        Func<Task> act = async () => await _sut.RegisterAsync(request);
+
+        // Assert
+        await act.Should().ThrowAsync<WeakPasswordException>()
+            .WithMessage("La contraseña debe tener al menos 6 caracteres y contener al menos un número.");
+
+        // Verificamos el "Fail Fast": NUNCA se debe llamar a la base de datos ni al Hasher
+        _userRepositoryMock.Verify(x => x.GetByUserNameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()),
+            Times.Never);
+        _userRepositoryMock.Verify(x => x.AddAsync(It.IsAny<User>(), It.IsAny<CancellationToken>()), Times.Never);
+        _passwordHasherMock.Verify(x => x.Hash(It.IsAny<string>()), Times.Never);
+    }
 }

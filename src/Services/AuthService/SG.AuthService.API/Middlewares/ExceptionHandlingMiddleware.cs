@@ -61,6 +61,13 @@ public class ExceptionHandlingMiddleware
         response.Title = "Invalid User or Password";
         response.Detail = ex.Message;
         break;
+      
+      case WeakPasswordException ex:
+        context.Response.StatusCode = StatusCodes.Status400BadRequest;
+        response.Status = StatusCodes.Status400BadRequest;
+        response.Title = "Weak Password";
+        response.Detail = ex.Message;
+        break;
 
       case DomainException ex:
         context.Response.StatusCode = StatusCodes.Status400BadRequest;

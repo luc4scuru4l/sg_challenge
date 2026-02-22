@@ -21,6 +21,12 @@ public class AuthService : IAuthService
 
   public async Task RegisterAsync(RegisterRequest request, CancellationToken cancellationToken = default)
   {
+    var cleanPassword = request.Password.Trim();
+    if (string.IsNullOrEmpty(cleanPassword) || cleanPassword.Length < 6 || !cleanPassword.Any(char.IsDigit))
+    {
+      throw new WeakPasswordException();
+    }
+    
     var existingUser = await _userRepository.GetByUserNameAsync(request.UserName, cancellationToken);
     if (existingUser != null)
     {
