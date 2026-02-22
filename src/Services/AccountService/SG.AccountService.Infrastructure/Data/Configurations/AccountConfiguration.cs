@@ -27,10 +27,6 @@ public class AccountConfiguration : IEntityTypeConfiguration<Account>
         .IsRequired();
     });
 
-    builder.Property(e => e.Balance)
-      .HasPrecision(18, 4)
-      .IsRequired();
-
     builder.Property(e => e.CreatedAt)
       .IsRequired();
 
