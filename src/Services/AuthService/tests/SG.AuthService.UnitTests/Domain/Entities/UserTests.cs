@@ -65,13 +65,17 @@ public class UserTests
     // Arrange
     // Crea un string de 51 letras 'a' (MaxUserNameLength + 1)
     var tooLongUserName = new string('a', User.MAX_USERNAME_LENGTH + 1);
+    var tooShortUserName = new string('a', User.MIN_USERNAME_LENGTH - 1);
     var validPasswordHash = "hashed_password_123";
 
     // Act
-    Action act = () => new User(tooLongUserName, validPasswordHash);
+    Action actMax = () => new User(tooLongUserName, validPasswordHash);
+    Action actMin = () => new User(tooShortUserName, validPasswordHash);
 
     // Assert
-    act.Should().Throw<InvalidUserException>()
+    actMax.Should().Throw<InvalidUserException>()
       .WithMessage($"El nombre de usuario no puede superar los {User.MAX_USERNAME_LENGTH} caracteres.");
+    actMin.Should().Throw<InvalidUserException>()
+      .WithMessage($"El nombre de usuario no puede tener menos de {User.MIN_USERNAME_LENGTH} caracteres.");
   }
 }

@@ -9,6 +9,7 @@ public class User
   public bool IsActive { get; private set; }
   public DateTime CreatedAt { get; private set; }
   public const int MAX_USERNAME_LENGTH = 50;
+  public const int MIN_USERNAME_LENGTH = 5;
   
   protected User()
   {
@@ -22,6 +23,9 @@ public class User
     
     if (cleanUserName.Length > MAX_USERNAME_LENGTH)
       throw new InvalidUserException($"El nombre de usuario no puede superar los {MAX_USERNAME_LENGTH} caracteres.");
+
+    if (cleanUserName.Length < MIN_USERNAME_LENGTH)
+      throw new InvalidUserException($"El nombre de usuario no puede tener menos de {MIN_USERNAME_LENGTH} caracteres.");
     
     if (string.IsNullOrWhiteSpace(passwordHash))
       throw new InvalidUserException("El hash de la contraseña es requerido.");
