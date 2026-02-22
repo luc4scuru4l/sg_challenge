@@ -21,6 +21,9 @@ public class AccountsController : ControllerBase
     _accountService = accountService;
   }
 
+  /// <summary>
+  /// Crea una cuenta con balance 0.
+  /// </summary>
   [HttpPost]
   [ProducesResponseType(typeof(AccountResponseDto), StatusCodes.Status201Created)]
   public async Task<ActionResult<AccountResponseDto>> CreateAccount(CancellationToken cancellationToken)
@@ -31,6 +34,9 @@ public class AccountsController : ControllerBase
     return CreatedAtAction(nameof(GetBalance), new { id = account.AccountId }, account);
   }
 
+  /// <summary>
+  /// Consulta el balance de una cuenta existente.
+  /// </summary>
   [HttpGet("{id:guid}/balance")]
   [ProducesResponseType(typeof(AccountResponseDto), StatusCodes.Status200OK)]
   [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -44,6 +50,12 @@ public class AccountsController : ControllerBase
   // TODO: Crear carpeta de DTO's en este proyecto
   public record TransactionRequest(decimal Amount);
 
+  /// <summary>
+  /// Realiza un deposito en una cuenta.
+  /// </summary>
+  /// <remarks>
+  /// Aumenta el balance de una cuenta existente.
+  /// </remarks>
   [HttpPost("{id:guid}/deposit")]
   [ProducesResponseType(typeof(AccountResponseDto), StatusCodes.Status200OK)]
   [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
@@ -56,6 +68,12 @@ public class AccountsController : ControllerBase
     return Ok(response);
   }
 
+  /// <summary>
+  /// Realiza un retiro en una cuenta existente.
+  /// </summary>
+  /// <remarks>
+  /// Disminuye el balance de una cuenta. El monto a retirar no puede exceder el saldo actual de la cuenta.
+  /// </remarks>
   [HttpPost("{id:guid}/withdraw")]
   [ProducesResponseType(typeof(AccountResponseDto), StatusCodes.Status200OK)]
   [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
