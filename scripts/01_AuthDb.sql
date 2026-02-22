@@ -19,5 +19,5 @@ CREATE TABLE Users (
 );
 GO
 
-CREATE NONCLUSTERED INDEX IX_Users_UserName ON Users(UserName);
+CREATE UNIQUE NONCLUSTERED INDEX IX_Users_UserName ON Users(UserName);
 GO
