@@ -25,10 +25,10 @@ La aplicación está diseñada para ser ejecutada y probada en un entorno local.
 
 **2. Preparar las variables de entorno**
 
-Copiá el archivo de ejemplo para generar su configuración local:
+Copie el archivo de ejemplo para generar su configuración local:
 `cp .env.example .env`
 
-Asegurate de que el archivo `.env` contenga los siguientes valores:
+Asegurese de que el archivo `.env` contenga los siguientes valores:
 
 * `DB_PASSWORD`: Contraseña del usuario SA de SQL Server (Ej: SGFinancial2026!).
 * `JWT_SECRET_KEY`: Clave privada para la firma de tokens.
@@ -37,22 +37,23 @@ Asegurate de que el archivo `.env` contenga los siguientes valores:
 
 **3. Levantar la infraestructura**
 
-Ejecutá el orquestador en segundo plano:
+Ejecute el orquestador en segundo plano:
 
 `docker compose up -d`
 
-*Nota: Si experimentas conflictos de puertos, modificá `GATEWAY_PORT` o `SQL_PORT` en su archivo `.env`.*
+*Nota: Si experimentaa conflictos de puertos, modifique `GATEWAY_PORT` o `SQL_PORT` en su archivo `.env`.*
 
-**4. Inicializar las Bases de Datos**
+**4. Inicialización de Bases de Datos**
 
-Una vez que el contenedor de SQL Server esté operativo, Hay que inyectar los esquemas de datos ejecutando los siguientes comandos
-en la terminal. **Reemplazá "SGFinancial2026!" si modificaste la contraseña en el paso 1.**
+Una vez que el contenedor de SQL Server se encuentre operativo, inicialice los esquemas y tablas del sistema.
 
-```bash
-docker exec -i sg_sqlserver /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "SGFinancial2026!" -C < ./scripts/01_AuthDb.sql
+*Nota: Si modificó la contraseña por defecto en el archivo `.env`, deberá editar manualmente los archivos de
+inicialización mencionados abajo para reflejar la nueva credencial antes de ejecutarlos.*
 
-docker exec -i sg_sqlserver /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "SGFinancial2026!" -C < ./scripts/02_AccountDb.sql
-```
+**Desde la raíz del proyecto**, ejecute el script correspondiente a su sistema operativo:
+
+* **Windows:** `.\scripts\init-db.bat`
+* **Linux / macOS:** `./scripts/init-db.sh`
 
 ## Ejecución
 
