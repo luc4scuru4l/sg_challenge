@@ -85,6 +85,7 @@ Para más información respecto a los DTO's de entrada y salida para los endpoin
    1. **Servicio de autenticación:** `http://localhost:5000/auth-docs/`
    2. **Servicio de cuentas:** `http://localhost:5000/accounts-docs/`
 2. Colección de postman presente en la raíz del proyecto. Contiene los endpoints y ejemplos.
+3. Consultar el archivo `api.md` presente en la raíz del proyecto. 
 
 ## Bibliografía consultada
 1. Building Microservices - Sam Newman

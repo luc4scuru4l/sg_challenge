@@ -654,6 +654,57 @@
 							],
 							"cookie": [],
 							"body": null
+						},
+						{
+							"name": "400 Bad Request",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"amount\" : 31233123.123\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{gateway_url}}/api/accounts/{{current_account}}/deposit",
+									"host": [
+										"{{gateway_url}}"
+									],
+									"path": [
+										"api",
+										"accounts",
+										"{{current_account}}",
+										"deposit"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 23 Feb 2026 06:11:32 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "Kestrel"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"title\": \"Invalid Money Amount\",\n    \"status\": 400,\n    \"detail\": \"El monto no puede tener más de dos decimales.\",\n    \"instance\": \"/api/accounts/cdef4f1f-a540-4331-832b-c5e703e23ade/deposit\"\n}"
 						}
 					]
 				},
@@ -966,7 +1017,7 @@
 				"bearer": [
 					{
 						"key": "token",
-						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMzhiZmU0Mi1kMWExLTRkMzUtYTg2MC01ODAwMTFhNTk0YmQiLCJuYW1lIjoiTW9yZmVvIiwianRpIjoiYmU4ODYzMjgtMWY5Yi00YzRjLWJjMGQtNmY0ZjdkZGRlZjZlIiwiZXhwIjoxNzcxODI1NTk2LCJpc3MiOiJTRy5BdXRoU2VydmljZSIsImF1ZCI6IlNHLk1pY3Jvc2VydmljZXMifQ.QBXGE3hr30it5ZxydojqLoVFvD155YfVy_c989k-gRs",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjODcwNjRlMS1hMDk1LTQ1MzYtOWRiNy04MDg3YjU3ZWI2MjEiLCJuYW1lIjoiTW9yZmVvIiwianRpIjoiZjEzM2M2M2ItN2VlZS00YjZlLWEzZTYtZDdjYzUyZDg0ODI0IiwiZXhwIjoxNzcxODI4MjM5LCJpc3MiOiJTRy5BdXRoU2VydmljZSIsImF1ZCI6IlNHLk1pY3Jvc2VydmljZXMifQ.PhiLu5rw9vA37SA3oWNat1qCdrtp-FLk63eDQ-6HJp0",
 						"type": "string"
 					}
 				]
@@ -1023,7 +1074,7 @@
 		},
 		{
 			"key": "current_account",
-			"value": "09a57768-5cbd-407e-b5e8-b47222ff4b23",
+			"value": "cdef4f1f-a540-4331-832b-c5e703e23ade",
 			"type": "string"
 		}
 	]
