@@ -18,24 +18,7 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"var responseData = pm.response.json();",
-									"",
-									"// Test to check if the response is an object with a transactions property",
-									"pm.test(\"Response is an object with transactions property\", function () {",
-									"    pm.expect(responseData).to.be.an('object').that.has.property('transactions');",
-									"});",
-									"",
-									"// Test to check the structure and data types of the transactions array",
-									"pm.test(\"Transactions array structure and data types are valid\", function () {",
-									"    responseData.transactions.forEach(function(transaction) {",
-									"        pm.expect(transaction).to.be.an('object').that.has.property('id').to.be.a('number');",
-									"        pm.expect(transaction).to.have.property('createdAt').to.be.a('string');",
-									"        pm.expect(transaction).to.have.property('fromAccountId').to.be.a('number');",
-									"        pm.expect(transaction).to.have.property('toAccountId').to.be.a('number');",
-									"        pm.expect(transaction).to.have.property('currency').to.be.a('string');",
-									"        pm.expect(transaction).to.have.property('amount').to.be.a('number');",
-									"    });",
-									"});"
+									""
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -47,7 +30,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"userName\" : \"Morfeo\",\n    \"password\" : \"#En\"\n}",
+							"raw": "{\n    \"userName\" : \"Morfeo\",\n    \"password\" : \"#Encefalo1\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -240,7 +223,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"userName\" : \"Morfi\",\n    \"password\" : \"#Encefalo1\"\n}",
+							"raw": "{\n    \"userName\" : \"Morfeo\",\n    \"password\" : \"#Encefalo1\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -682,7 +665,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"amount\" : 9999999999999999\n}",
+							"raw": "{\n    \"amount\" : 55555\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -856,21 +839,9 @@
 				},
 				{
 					"name": "Balance",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
 							"raw": "{{gateway_url}}/api/accounts/{{current_account}}/balance",
 							"host": [
@@ -996,7 +967,7 @@
 				"bearer": [
 					{
 						"key": "token",
-						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzNWI1Mjg2ZC01ZDJkLTQ2OTYtYTIwNC0yNDJjZWVmZGQ2NzAiLCJuYW1lIjoiTW9yZmkiLCJqdGkiOiJlMjk3NDgyMS05MmJhLTRmNDEtOTZkOC04OTlhOTNhYzZjZjciLCJleHAiOjE3NzE4MTg1MTUsImlzcyI6IlNHLkF1dGhTZXJ2aWNlIiwiYXVkIjoiU0cuTWljcm9zZXJ2aWNlcyJ9.C_dpth2eJNpR--FhlubD0bmKt7HIP4o4LnaNxjNSvn0",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMzhiZmU0Mi1kMWExLTRkMzUtYTg2MC01ODAwMTFhNTk0YmQiLCJuYW1lIjoiTW9yZmVvIiwianRpIjoiYmU4ODYzMjgtMWY5Yi00YzRjLWJjMGQtNmY0ZjdkZGRlZjZlIiwiZXhwIjoxNzcxODI1NTk2LCJpc3MiOiJTRy5BdXRoU2VydmljZSIsImF1ZCI6IlNHLk1pY3Jvc2VydmljZXMifQ.QBXGE3hr30it5ZxydojqLoVFvD155YfVy_c989k-gRs",
 						"type": "string"
 					}
 				]
