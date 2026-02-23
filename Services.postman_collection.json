@@ -2,7 +2,6 @@
 	"info": {
 		"_postman_id": "424eb2c8-fb67-491e-bf5f-c7b63447ab9d",
 		"name": "Services",
-		"description": "> Prototyping your API in Postman streamlines the development process by enabling you to design and test front- and back-end API-driven functionalities within a shared workspace. \n  \n\n## **🪐 Get started**\n\nThis collection serves as a place for teams from the Intergalactic Bank to collaborate on the design of the soon-to-be-developed Intergalactic Bank API. This prototype collection outlines how the service's requests and responses should function. Stakeholders should provide their thoughts and suggestions before we begin development.\n\n## **🧑‍💻 Setting up a mock server**\n\n<img src=\"https://lh7-us.googleusercontent.com/eNxPYjGNGALmKSzZvdhlMuy_XK3C_iQ3rK7tCDiPvr6nePMyggp9NTIAjcZYs7oIy8PU_NCGFKtcBPRZrfplfPyrKsO5SCMRX6OuBpzsL_HuOHxW2DwA3FH2-o0uFJgAZOr7JaQTiIvkayUSrPdsxQQ\">\n\nThis collection is meant to be used alongside a [<b>Postman Mock Server</b>](https://learning.postman.com/docs/designing-and-developing-your-api/mocking-data/setting-up-mock/)**.** Since we are still in the planning phase of the API, we have included several example responses for each request, laying out how we think each possible response will look. Including these example responses also has the added benefit of powering a mock server. By following the instructions, you can set up your own mock server and simulate the behavior of this API by returning the predefined data.\n\n**To set up a mock server:**\n\n1. Select **Mock collection** from the collection's actions menu.\n2. On the **Create a mock server** page, add a name for your mock server, and select to **Save the mock server URL as a new environment variable.** This will create a new environment with the mock’s URL pre-populated.\n3. Select the **New Environment** from the **Environment** dropdown list.\n4. Complete the process by clicking **Create Mock Server**.\n5. Send the request! You should now see that the `{{url}}` variable is using the mock server you set up previously.\n6. Try editing fields in the mocked responses to see your changes reflected in the mock server.\n    \n\n## **🤔Why include tests?**\n\nEach request in the collection includes tests to check the response structure. These tests check that all of the properties that other systems rely on are present and of the expected data type. Once you have the fully built-out service in place, you can swap the mock server URL for the live URL and test that your implementation follows the same guidelines as your prototype. This gives you confidence that you can start integrating this service into your systems.\n\nIf you are adding a new proposed endpoint for this request, try asking Postbot to generate tests for it.\n\n## **🤝Collaborate with us!**\n\nThe Bank Services team wants your team’s input on our API design. Add an [inline comment](https://learning.postman.com/docs/collaborating-in-postman/working-with-your-team/discussing-your-work/) to this collection with your ideas, questions, and suggestions, or reach out to us on our internal Slack by tagging `@bank-services`.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "28822939",
 		"_collection_link": "https://austral-labs.postman.co/workspace/SG-Challenge~4a4a6115-7b60-44a3-ae80-2c20ee64e849/collection/28822939-424eb2c8-fb67-491e-bf5f-c7b63447ab9d?action=share&source=collection_link&creator=28822939"
@@ -397,7 +396,7 @@
 					]
 				}
 			],
-			"description": "A transaction records money moving in or out of an account. Transactions at the Intergalactic Bank should follow a blockchain-like approach. Once created, they cannot be updated or deleted, so we will have only endpoints to get or create transactions.",
+			"description": "Microservicio encargado de la gestión de identidades, registro de  \nusuarios y emisión de tokens JWT para el ecosistema financiero SG.  \nEste servicio permite:  \n1\\. Registrar un usuario  \n2\\. Loguear un usuario",
 			"auth": {
 				"type": "noauth"
 			},
@@ -961,7 +960,7 @@
 					]
 				}
 			],
-			"description": "An Account at the Intergalactic Bank allows you to store funds. Account endpoints return information about accounts and account holders at the Intergalactic Bank. They should not return information about transactions. Instead, all transaction information should be accessed by requests in the `Transactions` folder.",
+			"description": "Microservicio encargado de la gestión de cuentas para el ecosistema financiero SG.  \nTodos los endpoints están segurizados mediante JWT.  \nEste servicio permite:  \n1\\. Crear una cuenta.  \n2\\. Consultar el balance de una cuenta.  \n3\\. Realizar un depósito en una cuenta.  \n4\\. Realizar un retiro en una cuenta.",
 			"auth": {
 				"type": "bearer",
 				"bearer": [
