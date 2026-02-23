@@ -6,7 +6,7 @@ services:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=${DB_PASSWORD}
     ports:
-      - "1433:1433"
+      - "${SQL_PORT}:1433"
     volumes:
       - sqlvolume:/var/opt/mssql
       - ./scripts:/scripts
@@ -25,8 +25,6 @@ services:
     networks:
       - db-internal
       - api-internal
-    ports:
-      - "5001:8080"
     depends_on:
       - sqlserver
 
@@ -42,8 +40,6 @@ services:
     networks:
       - db-internal
       - api-internal
-    ports:
-      - "5002:8080"
     depends_on:
       - sqlserver
 
@@ -58,7 +54,7 @@ services:
     networks:
       - api-internal
     ports:
-      - "5000:8080"
+      - "${GATEWAY_PORT}:8080"
     depends_on:
       - auth-service
       - account-service
@@ -71,6 +67,3 @@ networks:
 
 volumes:
   sqlvolume:
-  
-  
-    
