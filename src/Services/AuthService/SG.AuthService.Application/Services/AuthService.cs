@@ -43,7 +43,12 @@ public class AuthService : IAuthService
 
   public async Task<LoginResponse> LoginAsync(LoginRequest request, CancellationToken cancellationToken = default)
   {
-    if (string.IsNullOrWhiteSpace(request.UserName) || string.IsNullOrWhiteSpace(request.Password))
+    var cleanPassword = request.Password?.Trim() ?? string.Empty;
+    if (string.IsNullOrWhiteSpace(request.UserName) || 
+        string.IsNullOrWhiteSpace(request.Password) ||
+        cleanPassword.Length < MIN_PASSWORD_LENGTH ||
+        cleanPassword.Length > MAX_PASSWORD_LENGTH ||
+        !cleanPassword.Any(char.IsDigit))
       throw new InvalidCredentialsException();
     
     var user = await _userRepository.GetByUserNameAsync(request.UserName, cancellationToken);
