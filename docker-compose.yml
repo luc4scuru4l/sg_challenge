@@ -1,16 +1,76 @@
-version: '3.8'
-
 services:
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: sgfinancial_db
+    container_name: sg_sqlserver
     environment:
       - ACCEPT_EULA=Y
-      - MSSQL_SA_PASSWORD=${DB_PASSWORD}
+      - SA_PASSWORD=${DB_PASSWORD}
     ports:
       - "1433:1433"
     volumes:
-      - sqlserver_data:/var/opt/mssql
+      - sqlvolume:/var/opt/mssql
+      - ./scripts:/scripts
+    networks:
+      - db-internal
+
+  auth-service:
+    image: sg-auth-service
+    build:
+      context: .
+      dockerfile: src/Services/AuthService/SG.AuthService.API/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=SG_Financial_AuthDb;User Id=sa;Password=${DB_PASSWORD};TrustServerCertificate=True;
+      - Jwt__Key=${JWT_SECRET_KEY}
+    networks:
+      - db-internal
+      - api-internal
+    ports:
+      - "5001:8080"
+    depends_on:
+      - sqlserver
+
+  account-service:
+    image: sg-account-service
+    build:
+      context: .
+      dockerfile: src/Services/AccountService/SG.AccountService.API/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=SG_Financial_AccountDb;User Id=sa;Password=${DB_PASSWORD};TrustServerCertificate=True;
+      - Jwt__Key=${JWT_SECRET_KEY}
+    networks:
+      - db-internal
+      - api-internal
+    ports:
+      - "5002:8080"
+    depends_on:
+      - sqlserver
+
+  api-gateway:
+    image: sg-api-gateway
+    build:
+      context: .
+      dockerfile: src/Gateway/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Jwt__Key=${JWT_SECRET_KEY}
+    networks:
+      - api-internal
+    ports:
+      - "5000:8080"
+    depends_on:
+      - auth-service
+      - account-service
+  
+networks:
+  api-internal:
+    driver: bridge
+  db-internal:
+    driver: bridge
 
 volumes:
-  sqlserver_data:
+  sqlvolume:
+  
+  
+    

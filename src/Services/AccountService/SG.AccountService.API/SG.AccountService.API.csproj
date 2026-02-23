@@ -7,6 +7,7 @@
         <UserSecretsId>23155ce5-fbb9-4b96-a1ee-dfb9cf9c360b</UserSecretsId>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <NoWarn>$(NoWarn);1591</NoWarn>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <ItemGroup>
@@ -22,6 +23,12 @@
     <ItemGroup>
         <ProjectReference Include="..\SG.AccountService.Application\SG.AccountService.Application.csproj"/>
         <ProjectReference Include="..\SG.AccountService.Infrastructure\SG.AccountService.Infrastructure.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\..\..\..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
     </ItemGroup>
 
 </Project>
