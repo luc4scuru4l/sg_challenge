@@ -1,1081 +1,1141 @@
 {
-	"info": {
-		"_postman_id": "424eb2c8-fb67-491e-bf5f-c7b63447ab9d",
-		"name": "Services",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "28822939",
-		"_collection_link": "https://austral-labs.postman.co/workspace/SG-Challenge~4a4a6115-7b60-44a3-ae80-2c20ee64e849/collection/28822939-424eb2c8-fb67-491e-bf5f-c7b63447ab9d?action=share&source=collection_link&creator=28822939"
-	},
-	"item": [
-		{
-			"name": "AuthService",
-			"item": [
-				{
-					"name": "Register user",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"userName\" : \"Morfeo\",\n    \"password\" : \"#Encefalo1\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{gateway_url}}/api/auth/register",
-							"host": [
-								"{{gateway_url}}"
-							],
-							"path": [
-								"api",
-								"auth",
-								"register"
-							]
-						},
-						"description": "This endpoint will retrieve transactions for a given account, optionally filtering on the date created (`createdAt`) and the account receiving the transaction (`toAccountId`)."
-					},
-					"response": [
-						{
-							"name": "409 Conflict",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"userName\" : \"Morfi\",\n    \"password\" : \"#Encefalo1\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{gateway_url}}/api/auth/register",
-									"host": [
-										"{{gateway_url}}"
-									],
-									"path": [
-										"api",
-										"auth",
-										"register"
-									]
-								}
-							},
-							"status": "Conflict",
-							"code": 409,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								},
-								{
-									"key": "Date",
-									"value": "Mon, 23 Feb 2026 01:34:49 GMT"
-								},
-								{
-									"key": "Server",
-									"value": "Kestrel"
-								},
-								{
-									"key": "Transfer-Encoding",
-									"value": "chunked"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"title\": \"Conflict User\",\n    \"status\": 409,\n    \"detail\": \"El nombre de usuario 'Morfi' ya está en uso.\",\n    \"instance\": \"/api/auth/register\"\n}"
-						},
-						{
-							"name": "201 Created",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"userName\" : \"Morfeo\",\n    \"password\" : \"#Encefalo1\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{gateway_url}}/api/auth/register",
-									"host": [
-										"{{gateway_url}}"
-									],
-									"path": [
-										"api",
-										"auth",
-										"register"
-									]
-								}
-							},
-							"status": "Created",
-							"code": 201,
-							"_postman_previewlanguage": "plain",
-							"header": [
-								{
-									"key": "Content-Length",
-									"value": "0"
-								},
-								{
-									"key": "Date",
-									"value": "Mon, 23 Feb 2026 01:35:35 GMT"
-								},
-								{
-									"key": "Server",
-									"value": "Kestrel"
-								}
-							],
-							"cookie": [],
-							"body": null
-						},
-						{
-							"name": "400 Bad Request",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"userName\" : \"Morfeo\",\n    \"password\" : \"#En\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{gateway_url}}/api/auth/register",
-									"host": [
-										"{{gateway_url}}"
-									],
-									"path": [
-										"api",
-										"auth",
-										"register"
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								},
-								{
-									"key": "Date",
-									"value": "Mon, 23 Feb 2026 01:36:59 GMT"
-								},
-								{
-									"key": "Server",
-									"value": "Kestrel"
-								},
-								{
-									"key": "Transfer-Encoding",
-									"value": "chunked"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"title\": \"Invalid Password\",\n    \"status\": 400,\n    \"detail\": \"La contraseña no puede tener menos de 8 caracteres.\",\n    \"instance\": \"/api/auth/register\"\n}"
-						}
-					]
-				},
-				{
-					"name": "Login user",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"// Test the response body structure and values",
-									"pm.test(\"Response body structure is valid\", function () {",
-									"    var responseJSON = pm.response.json();",
-									"    pm.expect(responseJSON).has.property('transaction');",
-									"    pm.expect(responseJSON.transaction).to.be.an('object').that.has.all.keys('id', 'createdAt', 'fromAccountId', 'toAccountId', 'currency', 'amount');",
-									"});"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"userName\" : \"Morfeo\",\n    \"password\" : \"#Encefalo1\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{gateway_url}}/api/auth/login",
-							"host": [
-								"{{gateway_url}}"
-							],
-							"path": [
-								"api",
-								"auth",
-								"login"
-							]
-						},
-						"description": "This endpoint will retrieve details of a specific transaction by providing the transaction ID as a path parameter."
-					},
-					"response": [
-						{
-							"name": "200 OK",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"userName\" : \"Morfi\",\n    \"password\" : \"#Encefalo1\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{gateway_url}}/api/auth/login",
-									"host": [
-										"{{gateway_url}}"
-									],
-									"path": [
-										"api",
-										"auth",
-										"login"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "Date",
-									"value": "Mon, 23 Feb 2026 01:37:36 GMT"
-								},
-								{
-									"key": "Server",
-									"value": "Kestrel"
-								},
-								{
-									"key": "Transfer-Encoding",
-									"value": "chunked"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzNWI1Mjg2ZC01ZDJkLTQ2OTYtYTIwNC0yNDJjZWVmZGQ2NzAiLCJuYW1lIjoiTW9yZmkiLCJqdGkiOiJiODg5M2Q0MS1iMjEyLTQxYTMtYTEzOS1iNTBhM2NiNGU2NzciLCJleHAiOjE3NzE4MTc4NTYsImlzcyI6IlNHLkF1dGhTZXJ2aWNlIiwiYXVkIjoiU0cuTWljcm9zZXJ2aWNlcyJ9.cXTspbuD6p0TmBvnxGCgZrZ6GbHPnFK9xmgc9NPbo4o\"\n}"
-						},
-						{
-							"name": "401 Unauthorized",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"userName\" : \"Morfi\",\n    \"password\" : \"#Encefalo0\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{gateway_url}}/api/auth/login",
-									"host": [
-										"{{gateway_url}}"
-									],
-									"path": [
-										"api",
-										"auth",
-										"login"
-									]
-								}
-							},
-							"status": "Unauthorized",
-							"code": 401,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								},
-								{
-									"key": "Date",
-									"value": "Mon, 23 Feb 2026 01:38:13 GMT"
-								},
-								{
-									"key": "Server",
-									"value": "Kestrel"
-								},
-								{
-									"key": "Transfer-Encoding",
-									"value": "chunked"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"title\": \"Unauthorized\",\n    \"status\": 401,\n    \"detail\": \"Credenciales inválidas.\",\n    \"instance\": \"/api/auth/login\"\n}"
-						},
-						{
-							"name": "400 Bad Request",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"userNae\" : \"\",\n    \"password\" : \"#Encefalo\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{gateway_url}}/api/auth/login",
-									"host": [
-										"{{gateway_url}}"
-									],
-									"path": [
-										"api",
-										"auth",
-										"login"
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "Date",
-									"value": "Mon, 23 Feb 2026 01:47:02 GMT"
-								},
-								{
-									"key": "Server",
-									"value": "Kestrel"
-								},
-								{
-									"key": "Transfer-Encoding",
-									"value": "chunked"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"type\": \"https://tools.ietf.org/html/rfc9110#section-15.5.1\",\n    \"title\": \"One or more validation errors occurred.\",\n    \"status\": 400,\n    \"errors\": {\n        \"UserName\": [\n            \"The UserName field is required.\"\n        ]\n    },\n    \"traceId\": \"00-023d13a580b4184b25a065218b5e6e36-7c223befad8f36bc-00\"\n}"
-						}
-					]
-				}
-			],
-			"description": "Microservicio encargado de la gestión de identidades, registro de  \nusuarios y emisión de tokens JWT para el ecosistema financiero SG.  \nEste servicio permite:  \n1\\. Registrar un usuario  \n2\\. Loguear un usuario",
-			"auth": {
-				"type": "noauth"
-			},
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"type": "text/javascript",
-						"packages": {},
-						"exec": [
-							""
-						]
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"packages": {},
-						"exec": [
-							""
-						]
-					}
-				}
-			]
-		},
-		{
-			"name": "AccountService",
-			"item": [
-				{
-					"name": "Create account",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "{{gateway_url}}/api/accounts",
-							"host": [
-								"{{gateway_url}}"
-							],
-							"path": [
-								"api",
-								"accounts"
-							]
-						}
-					},
-					"response": [
-						{
-							"name": "401 Unauthorized",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"url": {
-									"raw": "{{gateway_url}}/api/accounts",
-									"host": [
-										"{{gateway_url}}"
-									],
-									"path": [
-										"api",
-										"accounts"
-									]
-								}
-							},
-							"status": "Unauthorized",
-							"code": 401,
-							"_postman_previewlanguage": "plain",
-							"header": [
-								{
-									"key": "Content-Length",
-									"value": "0"
-								},
-								{
-									"key": "Date",
-									"value": "Mon, 23 Feb 2026 01:47:52 GMT"
-								},
-								{
-									"key": "Server",
-									"value": "Kestrel"
-								},
-								{
-									"key": "WWW-Authenticate",
-									"value": "Bearer error=\"invalid_token\", error_description=\"The signature key was not found\""
-								}
-							],
-							"cookie": [],
-							"body": null
-						},
-						{
-							"name": "201 Created",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"url": {
-									"raw": "{{gateway_url}}/api/accounts",
-									"host": [
-										"{{gateway_url}}"
-									],
-									"path": [
-										"api",
-										"accounts"
-									]
-								}
-							},
-							"status": "Created",
-							"code": 201,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "Date",
-									"value": "Mon, 23 Feb 2026 01:51:00 GMT"
-								},
-								{
-									"key": "Server",
-									"value": "Kestrel"
-								},
-								{
-									"key": "Location",
-									"value": "http://localhost:5002/api/accounts/09a57768-5cbd-407e-b5e8-b47222ff4b23/balance"
-								},
-								{
-									"key": "Transfer-Encoding",
-									"value": "chunked"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"accountId\": \"09a57768-5cbd-407e-b5e8-b47222ff4b23\",\n    \"balance\": 0\n}"
-						}
-					]
-				},
-				{
-					"name": "Deposit",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"amount\" : 31233123.12\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{gateway_url}}/api/accounts/{{current_account}}/deposit",
-							"host": [
-								"{{gateway_url}}"
-							],
-							"path": [
-								"api",
-								"accounts",
-								"{{current_account}}",
-								"deposit"
-							]
-						}
-					},
-					"response": [
-						{
-							"name": "200 OK",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"amount\" : 31233123.12\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{gateway_url}}/api/accounts/{{current_account}}/deposit",
-									"host": [
-										"{{gateway_url}}"
-									],
-									"path": [
-										"api",
-										"accounts",
-										"{{current_account}}",
-										"deposit"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "Date",
-									"value": "Mon, 23 Feb 2026 01:52:04 GMT"
-								},
-								{
-									"key": "Server",
-									"value": "Kestrel"
-								},
-								{
-									"key": "Transfer-Encoding",
-									"value": "chunked"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"accountId\": \"09a57768-5cbd-407e-b5e8-b47222ff4b23\",\n    \"balance\": 31233123.12\n}"
-						},
-						{
-							"name": "404 Not Found",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"amount\" : 31233123.12\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{gateway_url}}/api/accounts/{{current_account}}/deposit",
-									"host": [
-										"{{gateway_url}}"
-									],
-									"path": [
-										"api",
-										"accounts",
-										"{{current_account}}",
-										"deposit"
-									]
-								}
-							},
-							"status": "Not Found",
-							"code": 404,
-							"_postman_previewlanguage": "plain",
-							"header": [
-								{
-									"key": "Content-Length",
-									"value": "0"
-								},
-								{
-									"key": "Date",
-									"value": "Mon, 23 Feb 2026 01:54:45 GMT"
-								},
-								{
-									"key": "Server",
-									"value": "Kestrel"
-								}
-							],
-							"cookie": [],
-							"body": null
-						},
-						{
-							"name": "400 Bad Request",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"amount\" : 31233123.123\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{gateway_url}}/api/accounts/{{current_account}}/deposit",
-									"host": [
-										"{{gateway_url}}"
-									],
-									"path": [
-										"api",
-										"accounts",
-										"{{current_account}}",
-										"deposit"
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								},
-								{
-									"key": "Date",
-									"value": "Mon, 23 Feb 2026 06:11:32 GMT"
-								},
-								{
-									"key": "Server",
-									"value": "Kestrel"
-								},
-								{
-									"key": "Transfer-Encoding",
-									"value": "chunked"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"title\": \"Invalid Money Amount\",\n    \"status\": 400,\n    \"detail\": \"El monto no puede tener más de dos decimales.\",\n    \"instance\": \"/api/accounts/cdef4f1f-a540-4331-832b-c5e703e23ade/deposit\"\n}"
-						}
-					]
-				},
-				{
-					"name": "Withdraw",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"amount\" : 55555\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{gateway_url}}/api/accounts/{{current_account}}/withdraw",
-							"host": [
-								"{{gateway_url}}"
-							],
-							"path": [
-								"api",
-								"accounts",
-								"{{current_account}}",
-								"withdraw"
-							]
-						}
-					},
-					"response": [
-						{
-							"name": "200 OK",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"amount\" : 1000000\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{gateway_url}}/api/accounts/{{current_account}}/withdraw",
-									"host": [
-										"{{gateway_url}}"
-									],
-									"path": [
-										"api",
-										"accounts",
-										"{{current_account}}",
-										"withdraw"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "Date",
-									"value": "Mon, 23 Feb 2026 01:52:40 GMT"
-								},
-								{
-									"key": "Server",
-									"value": "Kestrel"
-								},
-								{
-									"key": "Transfer-Encoding",
-									"value": "chunked"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"accountId\": \"09a57768-5cbd-407e-b5e8-b47222ff4b23\",\n    \"balance\": 61466246.24\n}"
-						},
-						{
-							"name": "422 Unprocessable Entity",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"amount\" : 9999999999999999\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{gateway_url}}/api/accounts/{{current_account}}/withdraw",
-									"host": [
-										"{{gateway_url}}"
-									],
-									"path": [
-										"api",
-										"accounts",
-										"{{current_account}}",
-										"withdraw"
-									]
-								}
-							},
-							"status": "Unprocessable Entity",
-							"code": 422,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								},
-								{
-									"key": "Date",
-									"value": "Mon, 23 Feb 2026 01:53:03 GMT"
-								},
-								{
-									"key": "Server",
-									"value": "Kestrel"
-								},
-								{
-									"key": "Transfer-Encoding",
-									"value": "chunked"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"title\": \"Business Validation Error\",\n    \"status\": 422,\n    \"detail\": \"Fondos insuficientes para realizar la operación.\",\n    \"instance\": \"/api/accounts/09a57768-5cbd-407e-b5e8-b47222ff4b23/withdraw\"\n}"
-						},
-						{
-							"name": "404 Not Found",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"amount\" : 9999999999999999\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{gateway_url}}/api/accounts/{{current_account}}/withdraw",
-									"host": [
-										"{{gateway_url}}"
-									],
-									"path": [
-										"api",
-										"accounts",
-										"{{current_account}}",
-										"withdraw"
-									]
-								}
-							},
-							"status": "Not Found",
-							"code": 404,
-							"_postman_previewlanguage": "plain",
-							"header": [
-								{
-									"key": "Content-Length",
-									"value": "0"
-								},
-								{
-									"key": "Date",
-									"value": "Mon, 23 Feb 2026 01:54:30 GMT"
-								},
-								{
-									"key": "Server",
-									"value": "Kestrel"
-								}
-							],
-							"cookie": [],
-							"body": null
-						}
-					]
-				},
-				{
-					"name": "Balance",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{gateway_url}}/api/accounts/{{current_account}}/balance",
-							"host": [
-								"{{gateway_url}}"
-							],
-							"path": [
-								"api",
-								"accounts",
-								"{{current_account}}",
-								"balance"
-							]
-						}
-					},
-					"response": [
-						{
-							"name": "404 Not Found",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{gateway_url}}/api/accounts/{{current_account}}/balance",
-									"host": [
-										"{{gateway_url}}"
-									],
-									"path": [
-										"api",
-										"accounts",
-										"{{current_account}}",
-										"balance"
-									]
-								}
-							},
-							"status": "Not Found",
-							"code": 404,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								},
-								{
-									"key": "Date",
-									"value": "Mon, 23 Feb 2026 01:59:59 GMT"
-								},
-								{
-									"key": "Server",
-									"value": "Kestrel"
-								},
-								{
-									"key": "Transfer-Encoding",
-									"value": "chunked"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"title\": \"Resource Not Found\",\n    \"status\": 404,\n    \"detail\": \"No se encontró la cuenta con el ID especificado: 1c14fe81-dbec-4f74-8f45-63f15e21a74a\",\n    \"instance\": \"/api/accounts/1c14fe81-dbec-4f74-8f45-63f15e21a74a/balance\"\n}"
-						},
-						{
-							"name": "200 OK",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{gateway_url}}/api/accounts/{{current_account}}/balance",
-									"host": [
-										"{{gateway_url}}"
-									],
-									"path": [
-										"api",
-										"accounts",
-										"{{current_account}}",
-										"balance"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "Date",
-									"value": "Mon, 23 Feb 2026 02:01:03 GMT"
-								},
-								{
-									"key": "Server",
-									"value": "Kestrel"
-								},
-								{
-									"key": "Transfer-Encoding",
-									"value": "chunked"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"accountId\": \"09a57768-5cbd-407e-b5e8-b47222ff4b23\",\n    \"balance\": 61466246.24\n}"
-						}
-					]
-				}
-			],
-			"description": "Microservicio encargado de la gestión de cuentas para el ecosistema financiero SG.  \nTodos los endpoints están segurizados mediante JWT.  \nEste servicio permite:  \n1\\. Crear una cuenta.  \n2\\. Consultar el balance de una cuenta.  \n3\\. Realizar un depósito en una cuenta.  \n4\\. Realizar un retiro en una cuenta.",
-			"auth": {
-				"type": "bearer",
-				"bearer": [
-					{
-						"key": "token",
-						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjODcwNjRlMS1hMDk1LTQ1MzYtOWRiNy04MDg3YjU3ZWI2MjEiLCJuYW1lIjoiTW9yZmVvIiwianRpIjoiZjEzM2M2M2ItN2VlZS00YjZlLWEzZTYtZDdjYzUyZDg0ODI0IiwiZXhwIjoxNzcxODI4MjM5LCJpc3MiOiJTRy5BdXRoU2VydmljZSIsImF1ZCI6IlNHLk1pY3Jvc2VydmljZXMifQ.PhiLu5rw9vA37SA3oWNat1qCdrtp-FLk63eDQ-6HJp0",
-						"type": "string"
-					}
-				]
-			},
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"type": "text/javascript",
-						"packages": {},
-						"exec": [
-							""
-						]
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"packages": {},
-						"exec": [
-							""
-						]
-					}
-				}
-			]
-		}
-	],
-	"event": [
-		{
-			"listen": "prerequest",
-			"script": {
-				"type": "text/javascript",
-				"exec": [
-					""
-				]
-			}
-		},
-		{
-			"listen": "test",
-			"script": {
-				"type": "text/javascript",
-				"exec": [
-					""
-				]
-			}
-		}
-	],
-	"variable": [
-		{
-			"key": "gateway_url",
-			"value": "http://localhost:5000",
-			"type": "string"
-		},
-		{
-			"key": "current_account",
-			"value": "cdef4f1f-a540-4331-832b-c5e703e23ade",
-			"type": "string"
-		}
-	]
+  "info": {
+    "_postman_id": "424eb2c8-fb67-491e-bf5f-c7b63447ab9d",
+    "name": "Services",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "28822939",
+    "_collection_link": "https://go.postman.co/collection/28822939-424eb2c8-fb67-491e-bf5f-c7b63447ab9d?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "AuthService",
+      "item": [
+        {
+          "name": "Register user",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"userName\" : \"Morfeo\",\n    \"password\" : \"#Encefalo1\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{gateway_url}}/api/auth/register",
+              "host": [
+                "{{gateway_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ]
+            },
+            "description": "# `POST /api/auth/register`\n\n## Registra un nuevo usuario en el sistema.\nLas credenciales a registrar deben cumplir con la política de seguridad:\n\n**Constraseña:**\n\n1. Mínimo 8 caracteres.\n2. Máximo 32 caracteres.\n3. Al menos un número.\n\n**Nombre de usuario**\n\n1. Menos de 50 caracteres\n2. Más de 4 caracteres\n\n*Tener en cuenta que el nombre de usuario es case insensitive*\n\n##### Body\n| Campo      | Tipo   | Requerido | Descripción       |\n|:-----------|:-------| :--- |:------------------|\n| `userName` | string | **Sí** | Nombre de usuario |\n| `password` | string | **Sí** | Contraseña        |"
+          },
+          "response": [
+            {
+              "name": "409 Conflict",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"userName\" : \"Morfi\",\n    \"password\" : \"#Encefalo1\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{gateway_url}}/api/auth/register",
+                  "host": [
+                    "{{gateway_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "register"
+                  ]
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Feb 2026 01:34:49 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "Kestrel"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"title\": \"Conflict User\",\n    \"status\": 409,\n    \"detail\": \"El nombre de usuario 'Morfi' ya está en uso.\",\n    \"instance\": \"/api/auth/register\"\n}"
+            },
+            {
+              "name": "201 Created",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"userName\" : \"Morfeo\",\n    \"password\" : \"#Encefalo1\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{gateway_url}}/api/auth/register",
+                  "host": [
+                    "{{gateway_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "register"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "plain",
+              "header": [
+                {
+                  "key": "Content-Length",
+                  "value": "0"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Feb 2026 01:35:35 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "Kestrel"
+                }
+              ],
+              "cookie": [],
+              "body": null
+            },
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"userName\" : \"Morfeo\",\n    \"password\" : \"#En\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{gateway_url}}/api/auth/register",
+                  "host": [
+                    "{{gateway_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "register"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Feb 2026 01:36:59 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "Kestrel"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"title\": \"Invalid Password\",\n    \"status\": 400,\n    \"detail\": \"La contraseña no puede tener menos de 8 caracteres.\",\n    \"instance\": \"/api/auth/register\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Login user",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 200\", function () {",
+                  "    if (pm.response.to.have.status(200)) {",
+                  "        pm.collectionVariables.set('token', pm.response.json().token);",
+                  "        pm.test(\"ℹ️ INFO: La variable 'token' se ha actualizado automáticamente\", function () {",
+                  "            pm.expect(true).to.be.true; ",
+                  "        });",
+                  "    }",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "packages": {},
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"userName\" : \"Morfeo\",\n    \"password\" : \"#Encefalo1\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{gateway_url}}/api/auth/login",
+              "host": [
+                "{{gateway_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            },
+            "description": "# `POST /api/auth/login`\n\n## Crea y retorna un token de acceso firmado para un usuario registrado. El token expira a los 20 minutos.\n\n### Body\n\n| Campo      | Tipo   | Requerido | Descripción       |\n|:-----------|:-------| :--- |:------------------|\n| `userName` | string | **Sí** | Nombre de usuario |\n| `password` | string | **Sí** | Contraseña        |"
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"userName\" : \"Morfi\",\n    \"password\" : \"#Encefalo1\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{gateway_url}}/api/auth/login",
+                  "host": [
+                    "{{gateway_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Feb 2026 01:37:36 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "Kestrel"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzNWI1Mjg2ZC01ZDJkLTQ2OTYtYTIwNC0yNDJjZWVmZGQ2NzAiLCJuYW1lIjoiTW9yZmkiLCJqdGkiOiJiODg5M2Q0MS1iMjEyLTQxYTMtYTEzOS1iNTBhM2NiNGU2NzciLCJleHAiOjE3NzE4MTc4NTYsImlzcyI6IlNHLkF1dGhTZXJ2aWNlIiwiYXVkIjoiU0cuTWljcm9zZXJ2aWNlcyJ9.cXTspbuD6p0TmBvnxGCgZrZ6GbHPnFK9xmgc9NPbo4o\"\n}"
+            },
+            {
+              "name": "401 Unauthorized",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"userName\" : \"Morfi\",\n    \"password\" : \"#Encefalo0\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{gateway_url}}/api/auth/login",
+                  "host": [
+                    "{{gateway_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Feb 2026 01:38:13 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "Kestrel"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"title\": \"Unauthorized\",\n    \"status\": 401,\n    \"detail\": \"Credenciales inválidas.\",\n    \"instance\": \"/api/auth/login\"\n}"
+            },
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"userNae\" : \"\",\n    \"password\" : \"#Encefalo\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{gateway_url}}/api/auth/login",
+                  "host": [
+                    "{{gateway_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Feb 2026 01:47:02 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "Kestrel"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"type\": \"https://tools.ietf.org/html/rfc9110#section-15.5.1\",\n    \"title\": \"One or more validation errors occurred.\",\n    \"status\": 400,\n    \"errors\": {\n        \"UserName\": [\n            \"The UserName field is required.\"\n        ]\n    },\n    \"traceId\": \"00-023d13a580b4184b25a065218b5e6e36-7c223befad8f36bc-00\"\n}"
+            }
+          ]
+        }
+      ],
+      "description": "Microservicio encargado de la gestión de identidades, registro de  \nusuarios y emisión de tokens JWT para el ecosistema financiero SG.  \nEste servicio permite:  \n1\\. Registrar un usuario  \n2\\. Loguear un usuario",
+      "auth": {
+        "type": "noauth"
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "exec": [
+              ""
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "exec": [
+              ""
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "AccountService",
+      "item": [
+        {
+          "name": "Create account",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 201\", function () {\r",
+                  "    if (pm.response.to.have.status(201)) {\r",
+                  "        pm.collectionVariables.set('current_account', pm.response.json().accountId);\r",
+                  "        pm.test(\"ℹ️ INFO: La variable 'current_account' se ha actualizado automáticamente\", function () {\r",
+                  "            pm.expect(true).to.be.true; \r",
+                  "        });\r",
+                  "    }\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "packages": {},
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{gateway_url}}/api/accounts",
+              "host": [
+                "{{gateway_url}}"
+              ],
+              "path": [
+                "api",
+                "accounts"
+              ]
+            },
+            "description": "# `POST /api/accounts`\n\n## Crea una cuenta con balance 0.\n\n### Body\n\nNo recibe"
+          },
+          "response": [
+            {
+              "name": "401 Unauthorized",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{gateway_url}}/api/accounts",
+                  "host": [
+                    "{{gateway_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "accounts"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "plain",
+              "header": [
+                {
+                  "key": "Content-Length",
+                  "value": "0"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Feb 2026 01:47:52 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "Kestrel"
+                },
+                {
+                  "key": "WWW-Authenticate",
+                  "value": "Bearer error=\"invalid_token\", error_description=\"The signature key was not found\""
+                }
+              ],
+              "cookie": [],
+              "body": null
+            },
+            {
+              "name": "201 Created",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{gateway_url}}/api/accounts",
+                  "host": [
+                    "{{gateway_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "accounts"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Feb 2026 01:51:00 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "Kestrel"
+                },
+                {
+                  "key": "Location",
+                  "value": "http://localhost:5002/api/accounts/09a57768-5cbd-407e-b5e8-b47222ff4b23/balance"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"accountId\": \"09a57768-5cbd-407e-b5e8-b47222ff4b23\",\n    \"balance\": 0\n}"
+            }
+          ]
+        },
+        {
+          "name": "Deposit",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"amount\" : 31233123.12\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{gateway_url}}/api/accounts/{{current_account}}/deposit",
+              "host": [
+                "{{gateway_url}}"
+              ],
+              "path": [
+                "api",
+                "accounts",
+                "{{current_account}}",
+                "deposit"
+              ]
+            },
+            "description": "# `POST /api/accounts/{id}/deposit`\n\n## Realiza un deposito en una cuenta. El monto no puede ser negativo o tener más de 3 decimales.\n\n### Body\n\n| Campo      | Tipo    | Requerido | Descripción       |\n|:-----------|:--------| :--- |:------------------|\n| `amount`   | numeric | **Sí** | Monto a depositar |\n"
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"amount\" : 31233123.12\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{gateway_url}}/api/accounts/{{current_account}}/deposit",
+                  "host": [
+                    "{{gateway_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "accounts",
+                    "{{current_account}}",
+                    "deposit"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Feb 2026 01:52:04 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "Kestrel"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"accountId\": \"09a57768-5cbd-407e-b5e8-b47222ff4b23\",\n    \"balance\": 31233123.12\n}"
+            },
+            {
+              "name": "404 Not Found",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"amount\" : 31233123.12\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{gateway_url}}/api/accounts/{{current_account}}/deposit",
+                  "host": [
+                    "{{gateway_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "accounts",
+                    "{{current_account}}",
+                    "deposit"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "plain",
+              "header": [
+                {
+                  "key": "Content-Length",
+                  "value": "0"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Feb 2026 01:54:45 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "Kestrel"
+                }
+              ],
+              "cookie": [],
+              "body": null
+            },
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"amount\" : 31233123.123\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{gateway_url}}/api/accounts/{{current_account}}/deposit",
+                  "host": [
+                    "{{gateway_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "accounts",
+                    "{{current_account}}",
+                    "deposit"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Feb 2026 06:11:32 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "Kestrel"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"title\": \"Invalid Money Amount\",\n    \"status\": 400,\n    \"detail\": \"El monto no puede tener más de dos decimales.\",\n    \"instance\": \"/api/accounts/cdef4f1f-a540-4331-832b-c5e703e23ade/deposit\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Withdraw",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"amount\" : 55555\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{gateway_url}}/api/accounts/{{current_account}}/withdraw",
+              "host": [
+                "{{gateway_url}}"
+              ],
+              "path": [
+                "api",
+                "accounts",
+                "{{current_account}}",
+                "withdraw"
+              ]
+            },
+            "description": "# `POST /api/accounts/{id}/withdraw`\n\n## Realiza un retiro en una cuenta existente. El monto a retirar no puede exceder el saldo actual de la cuenta ni ser negativo o tenes más de dos decimales.\n\n### Body\n\n| Campo      | Tipo    | Requerido | Descripción     |\n|:-----------|:--------| :--- |:----------------|\n| `amount`   | numeric | **Sí** | Monto a retirar |"
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"amount\" : 1000000\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{gateway_url}}/api/accounts/{{current_account}}/withdraw",
+                  "host": [
+                    "{{gateway_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "accounts",
+                    "{{current_account}}",
+                    "withdraw"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Feb 2026 01:52:40 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "Kestrel"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"accountId\": \"09a57768-5cbd-407e-b5e8-b47222ff4b23\",\n    \"balance\": 61466246.24\n}"
+            },
+            {
+              "name": "422 Unprocessable Entity",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"amount\" : 9999999999999999\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{gateway_url}}/api/accounts/{{current_account}}/withdraw",
+                  "host": [
+                    "{{gateway_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "accounts",
+                    "{{current_account}}",
+                    "withdraw"
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Feb 2026 01:53:03 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "Kestrel"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"title\": \"Business Validation Error\",\n    \"status\": 422,\n    \"detail\": \"Fondos insuficientes para realizar la operación.\",\n    \"instance\": \"/api/accounts/09a57768-5cbd-407e-b5e8-b47222ff4b23/withdraw\"\n}"
+            },
+            {
+              "name": "404 Not Found",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"amount\" : 9999999999999999\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{gateway_url}}/api/accounts/{{current_account}}/withdraw",
+                  "host": [
+                    "{{gateway_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "accounts",
+                    "{{current_account}}",
+                    "withdraw"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "plain",
+              "header": [
+                {
+                  "key": "Content-Length",
+                  "value": "0"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Feb 2026 01:54:30 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "Kestrel"
+                }
+              ],
+              "cookie": [],
+              "body": null
+            }
+          ]
+        },
+        {
+          "name": "Balance",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{gateway_url}}/api/accounts/{{current_account}}/balance",
+              "host": [
+                "{{gateway_url}}"
+              ],
+              "path": [
+                "api",
+                "accounts",
+                "{{current_account}}",
+                "balance"
+              ]
+            },
+            "description": "# `GET /api/accounts/{id}/balance`\n\n## Consulta el balance de una cuenta existente.\n\n### Body\n\nNo recibe"
+          },
+          "response": [
+            {
+              "name": "404 Not Found",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{gateway_url}}/api/accounts/{{current_account}}/balance",
+                  "host": [
+                    "{{gateway_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "accounts",
+                    "{{current_account}}",
+                    "balance"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Feb 2026 01:59:59 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "Kestrel"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"title\": \"Resource Not Found\",\n    \"status\": 404,\n    \"detail\": \"No se encontró la cuenta con el ID especificado: 1c14fe81-dbec-4f74-8f45-63f15e21a74a\",\n    \"instance\": \"/api/accounts/1c14fe81-dbec-4f74-8f45-63f15e21a74a/balance\"\n}"
+            },
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{gateway_url}}/api/accounts/{{current_account}}/balance",
+                  "host": [
+                    "{{gateway_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "accounts",
+                    "{{current_account}}",
+                    "balance"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Feb 2026 02:01:03 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "Kestrel"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"accountId\": \"09a57768-5cbd-407e-b5e8-b47222ff4b23\",\n    \"balance\": 61466246.24\n}"
+            }
+          ]
+        }
+      ],
+      "description": "Microservicio encargado de la gestión de cuentas para el ecosistema financiero SG.  \nTodos los endpoints están segurizados mediante JWT.  \nEste servicio permite:  \n1\\. Crear una cuenta.  \n2\\. Consultar el balance de una cuenta.  \n3\\. Realizar un depósito en una cuenta.  \n4\\. Realizar un retiro en una cuenta.",
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "{{token}}",
+            "type": "string"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "gateway_url",
+      "value": "http://localhost:5000"
+    },
+    {
+      "key": "current_account",
+      "value": "cdef4f1f-a540-4331-832b-c5e703e23ade"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "default"
+    }
+  ]
 }
