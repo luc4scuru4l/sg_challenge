@@ -159,4 +159,24 @@ public class AccountServiceTests
       x => x.UpdateWithTransactionAsync(It.IsAny<Account>(), It.IsAny<Transaction>(), It.IsAny<CancellationToken>()),
       Times.Never);
   }
+
+  [Fact]
+  public async Task DepositAsync_WhenConcurrencyConflictOccurs_ShouldThrowConcurrencyConflictException()
+  {
+    // Arrange
+    var account = new Account(_userId);
+    _repositoryMock.Setup(x => x.GetByIdAndUserIdAsync(It.IsAny<Guid>(), _userId, It.IsAny<CancellationToken>()))
+      .ReturnsAsync(account);
+
+    // Simulamos que al intentar guardar, otro hilo ya modificó la fila
+    _repositoryMock.Setup(x =>
+        x.UpdateWithTransactionAsync(It.IsAny<Account>(), It.IsAny<Transaction>(), It.IsAny<CancellationToken>()))
+      .ThrowsAsync(new ConcurrencyConflictException());
+
+    // Act
+    Func<Task> act = async () => await _sut.DepositAsync(account.Id, _userId, 500);
+
+    // Assert
+    await act.Should().ThrowAsync<ConcurrencyConflictException>();
+  }
 }

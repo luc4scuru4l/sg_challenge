@@ -1,7 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using SG.AccountService.Domain.Repositories;
 using SG.AccountService.Domain.Entities;
+using SG.AccountService.Application.Exceptions;
 using SG.AccountService.Infrastructure.Data;
+
 
 namespace SG.AccountService.Infrastructure.Repositories;
 
@@ -30,6 +32,13 @@ public class AccountRepository : IAccountRepository
     CancellationToken cancellationToken = default)
   {
     await _context.Transactions.AddAsync(transaction, cancellationToken);
-    await _context.SaveChangesAsync(cancellationToken);
+    try
+    {
+      await _context.SaveChangesAsync(cancellationToken);
+    }
+    catch (DbUpdateConcurrencyException)
+    {
+      throw new ConcurrencyConflictException();
+    }
   }
 }

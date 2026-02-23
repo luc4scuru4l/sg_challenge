@@ -67,7 +67,14 @@ public class ExceptionHandlingMiddleware
         response.Title = "Unauthorized";
         response.Detail = ex.Message;
         break;
-
+      
+      case ConcurrencyConflictException ex:
+        context.Response.StatusCode = StatusCodes.Status409Conflict;
+        response.Status = StatusCodes.Status409Conflict;
+        response.Title = "Concurrency Conflict";
+        response.Detail = ex.Message;
+        break;
+      
       case DomainException ex:
         context.Response.StatusCode = StatusCodes.Status400BadRequest;
         response.Status = StatusCodes.Status400BadRequest;
